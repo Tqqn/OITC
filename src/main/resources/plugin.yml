@@ -1,0 +1,4 @@
+name: OITC
+version: '${project.version}'
+main: me.tqqn.oitc.OITC
+api-version: 1.16
