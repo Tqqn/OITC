@@ -1,0 +1,34 @@
+#Database credentials:
+database:
+  name: ''
+  host: ''
+  port:
+  username: ''
+  password: ''
+lobby:
+  world: ''
+  x:
+  y:
+  z:
+  pitch:
+  yaw:
+arena:
+  name: ''
+  minimumPlayers:
+  maximumPlayers:
+  killsToEndGame:
+  world:
+  spawn-locations:
+    1:
+      x:
+      y:
+      z:
+      pitch:
+      yaw:
+    2:
+      x:
+      y:
+      z:
+      pitch:
+      yaw:
+game-duration: 30

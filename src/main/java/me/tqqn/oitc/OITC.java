@@ -3,6 +3,7 @@ package me.tqqn.oitc;
 import jdk.javadoc.internal.tool.Start;
 import lombok.Getter;
 import me.tqqn.oitc.commands.StartCommand;
+import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.managers.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,11 +11,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class OITC extends JavaPlugin {
     @Getter
     private GameManager gameManager;
+    @Getter
+    private PluginConfig pluginConfig;
 
     @Override
     public void onEnable() {
         this.gameManager = new GameManager(this);
-
+        this.pluginConfig = new PluginConfig(this);
         registerCommands();
 
         sendStartUpMessage();

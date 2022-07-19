@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class PlayerManager {
 
     private final GameManager gameManager;
+    private final ItemStack arrow = new ItemStack(Material.ARROW,1);
 
     public PlayerManager(GameManager gameManager) {
         this.gameManager = gameManager;
@@ -24,12 +25,13 @@ public class PlayerManager {
 
         bow.setItemMeta(bowmeta);
 
-        ItemStack arrow = new ItemStack(Material.ARROW,1);
 
         player.getInventory().setItem(0, bow);
-        player.getInventory().setItem(1, arrow);
+        player.getInventory().setItem(1, this.arrow);
 
         player.sendMessage(Messages.GIVE_ITEM.getMessage());
     }
-
+    public void givePlayerArrow(Player player) {
+        player.getInventory().setItem(1, this.arrow);
+    }
 }
