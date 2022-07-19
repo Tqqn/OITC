@@ -16,8 +16,8 @@ public final class OITC extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.gameManager = new GameManager(this);
         this.pluginConfig = new PluginConfig(this);
+        this.gameManager = new GameManager(this);
         registerCommands();
 
         sendStartUpMessage();

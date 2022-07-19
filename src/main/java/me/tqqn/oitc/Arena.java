@@ -58,10 +58,10 @@ public class Arena {
         for (PluginPlayer player : this.playersInArena.values()) {
             if (winner == null) {
                 winner = player;
-                break;
             }
-            if (!(player.getPlayerStats().getKills() < winner.getPlayerStats().getKills())) break;
-            this.winner = winner;
+            if (!(player.getPlayerStats().getKills() < winner.getPlayerStats().getKills())) {
+                this.winner = winner;
+            }
         }
     }
 }

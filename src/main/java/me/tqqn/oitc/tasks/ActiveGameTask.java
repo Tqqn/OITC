@@ -20,9 +20,10 @@ public class ActiveGameTask extends BukkitRunnable {
     @Override
     public void run() {
         if (gameDuration == 0) {
-            gameManager.setGameState(GameState.END);
-            gameManager.broadcast(Messages.GAME_END_MESSAGE.getMessage());
             cancel();
+            gameManager.broadcast(Messages.GAME_END_MESSAGE.getMessage());
+            gameManager.setGameState(GameState.END);
+            return;
         }
 
         if (gameDuration < 10) {

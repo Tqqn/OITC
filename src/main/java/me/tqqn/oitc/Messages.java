@@ -12,7 +12,7 @@ public enum Messages {
     GAME_END_COUNTDOWN(Color.translateColor("&cGame is ending in &f%%SECONDS%%"),"%%SECONDS%%", "", ""),
     KICK_PLAYER_ON_ENDGAME(Color.translateColor("&cGame is restarting!"),"", "", ""),
     GLOBAL_PLAYER_KILL_MESSAGE(Color.translateColor("&f%%DEATH_PLAYER%% &6has been shot by &f%%KILLER%%"), "%%DEATH_PLAYER%%","%%KILLER%%", ""),
-    WIN_MESSAGE(Color.translateColor("&f%%WINNER%% &6has won the game!"), "%%PLAYER%%","",""),
+    WIN_MESSAGE(Color.translateColor("&f%%WINNER%% &6has won the game!"), "%%WINNER%%","",""),
     GAME_END_COUNTDOWN_MESSAGE(Color.translateColor("&cGame resets in &f%%SECONDS%%&f!"), "%%SECONDS%%","", ""),
     GAME_END_MESSAGE(Color.translateColor("&cGame has ended!"),"","", ""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");

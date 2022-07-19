@@ -24,14 +24,14 @@ public class CountdownTask extends BukkitRunnable {
     @Override
     public void run() {
         if (startGameTime == 0) {
+            cancel();
             gameManager.broadcast(Messages.GAME_START.getMessage());
             giveAllOnlinePlayersKit();
             gameManager.setGameState(GameState.ACTIVE);
-            cancel();
             return;
         }
 
-        gameManager.broadcast(Messages.GAME_START_COUNTDOWN.getMessage() + startGameTime);
+        gameManager.broadcast(Messages.GAME_START_COUNTDOWN.getMessage(String.valueOf(startGameTime)));
 
         startGameTime--;
     }

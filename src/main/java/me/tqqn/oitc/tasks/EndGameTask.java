@@ -22,13 +22,15 @@ public class EndGameTask extends BukkitRunnable {
     @Override
     public void run() {
         if (endCountdown == 0) {
+            cancel();
             clearPlayerInventory();
             //kickAllPlayers();
             gameManager.setGameState(GameState.RESTARTING);
+
             return;
         }
 
-        gameManager.broadcast(Messages.GAME_END_COUNTDOWN_MESSAGE.getMessage((String.valueOf(endCountdown)) + ChatColor.WHITE + endCountdown));
+        gameManager.broadcast(Messages.GAME_END_COUNTDOWN_MESSAGE.getMessage((String.valueOf(endCountdown))));
 
         endCountdown--;
     }

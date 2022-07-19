@@ -8,6 +8,7 @@ import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.events.PlayerHitListener;
 import me.tqqn.oitc.events.PlayerJoinListener;
+import me.tqqn.oitc.events.PlayerQuitListener;
 import me.tqqn.oitc.tasks.ActiveGameTask;
 import me.tqqn.oitc.tasks.CountdownTask;
 import me.tqqn.oitc.tasks.EndGameTask;
@@ -24,6 +25,10 @@ public class GameManager {
     private final PlayerManager playerManager;
     @Getter
     private final Arena arena;
+
+    private ActiveGameTask activeGameTask;
+    private CountdownTask countdownTask;
+    private EndGameTask endGameTask;
 
     public GameManager(OITC plugin) {
         this.plugin = plugin;
@@ -46,11 +51,17 @@ public class GameManager {
         switch (gameState) {
             case STARTING:
                 startCountdownToStartGame();
+                break;
             case ACTIVE:
+                if (this.countdownTask != null) this.countdownTask.cancel();
                 activeGameCountdown();
+                break;
             case END:
+                if (this.activeGameTask != null) this.activeGameTask.cancel();
                 endGame();
+                break;
             case RESTARTING:
+                if (this.endGameTask != null) this.endGameTask.cancel();
                 restartGame();
                 break;
         }
@@ -58,21 +69,22 @@ public class GameManager {
     }
 
     private void startCountdownToStartGame() {
-        CountdownTask countdownTask = new CountdownTask(this);
-        countdownTask.runTaskTimerAsynchronously(plugin, 0, 20);
+        this.countdownTask = new CountdownTask(this);
+        this.countdownTask.runTaskTimer(plugin, 0, 20);
     }
 
     private void activeGameCountdown() {
-        ActiveGameTask activeGameTask = new ActiveGameTask(plugin, this);
-        activeGameTask.runTaskTimerAsynchronously(plugin, 0, 20);
+        this.activeGameTask = new ActiveGameTask(plugin,this);
+        this.activeGameTask.runTaskTimer(plugin, 0, 20);
     }
 
     private void endGame() {
-        arena.calculateGameWinner();
-        broadcast(Messages.WIN_MESSAGE.getMessage(arena.getWinner().getDisplayName()));
-        EndGameTask endGameTask = new EndGameTask(this);
-        endGameTask.runTaskTimerAsynchronously(plugin, 0, 20);
+            arena.calculateGameWinner();
+            broadcast(Messages.WIN_MESSAGE.getMessage(arena.getWinner().getDisplayName()));
+            this.endGameTask = new EndGameTask(this);
+            this.endGameTask.runTaskTimer(plugin, 0, 20);
     }
+
     private void restartGame() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.teleport(plugin.getPluginConfig().getLobbyLocation());
@@ -85,6 +97,7 @@ public class GameManager {
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerHitListener(this),plugin);
-        pluginManager.registerEvents(new PlayerJoinListener(this), plugin);
+        pluginManager.registerEvents(new PlayerJoinListener(this, plugin), plugin);
+        pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
     }
 }
