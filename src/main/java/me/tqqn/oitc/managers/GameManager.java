@@ -1,5 +1,6 @@
 package me.tqqn.oitc.managers;
 
+import lombok.Getter;
 import me.tqqn.oitc.GameState;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.tasks.CountdownTask;
@@ -11,6 +12,7 @@ public class GameManager {
     public GameState gameState = GameState.LOBBY;
 
     private final OITC plugin;
+    @Getter
     private final PlayerManager playerManager;
 
     public GameManager(OITC plugin) {
@@ -35,8 +37,8 @@ public class GameManager {
     }
 
     public void startGame() {
-        CountdownTask countdownTask = new CountdownTask(playerManager);
-        countdownTask.run();
+        CountdownTask countdownTask = new CountdownTask(this);
+        countdownTask.runTaskTimer(plugin, 0, 20);
     }
 
 }

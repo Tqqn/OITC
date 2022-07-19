@@ -1,6 +1,8 @@
 package me.tqqn.oitc.tasks;
 
+import me.tqqn.oitc.GameState;
 import me.tqqn.oitc.Messages;
+import me.tqqn.oitc.managers.GameManager;
 import me.tqqn.oitc.managers.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,27 +14,26 @@ public class CountdownTask extends BukkitRunnable {
 
     private final PlayerManager playerManager;
 
-    public CountdownTask(PlayerManager playerManager) {
-        this.playerManager = playerManager;
+    private final GameManager gameManager;
+
+    public CountdownTask(GameManager gameManager) {
+        this.gameManager = gameManager;
+        this.playerManager = gameManager.getPlayerManager();
     }
 
     @Override
     public void run() {
         if (startGameTime == 0) {
-            sendMessagetoAllPlayers(Messages.GAME_START.getMessage());
+            Bukkit.broadcastMessage(Messages.GAME_START.getMessage());
             giveAllOnlinePlayersKit();
+            gameManager.setGameState(GameState.ACTIVE);
             cancel();
+            return;
         }
 
-        sendMessagetoAllPlayers(Messages.GAME_START_COOLDOWN.getMessage() + startGameTime);
+        Bukkit.broadcastMessage(Messages.GAME_START_COOLDOWN.getMessage() + startGameTime);
 
         startGameTime--;
-    }
-
-    private void sendMessagetoAllPlayers(String message) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(message);
-        }
     }
 
     private void giveAllOnlinePlayersKit() {
