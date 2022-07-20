@@ -1,10 +1,10 @@
 package me.tqqn.oitc;
 
-import jdk.javadoc.internal.tool.Start;
 import lombok.Getter;
 import me.tqqn.oitc.commands.StartCommand;
 import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.managers.GameManager;
+import me.tqqn.oitc.utils.Color;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

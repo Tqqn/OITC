@@ -1,7 +1,7 @@
 package me.tqqn.oitc.events;
 
-import me.tqqn.oitc.GameState;
-import me.tqqn.oitc.Messages;
+import me.tqqn.oitc.game.GameState;
+import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.managers.GameManager;
 import me.tqqn.oitc.players.PlayerStats;

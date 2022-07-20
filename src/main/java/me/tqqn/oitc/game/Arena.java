@@ -1,4 +1,4 @@
-package me.tqqn.oitc;
+package me.tqqn.oitc.game;
 
 import lombok.Getter;
 import me.tqqn.oitc.players.PluginPlayer;

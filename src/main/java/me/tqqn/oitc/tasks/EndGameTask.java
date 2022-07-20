@@ -1,10 +1,9 @@
 package me.tqqn.oitc.tasks;
 
-import me.tqqn.oitc.GameState;
-import me.tqqn.oitc.Messages;
+import me.tqqn.oitc.game.GameState;
+import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

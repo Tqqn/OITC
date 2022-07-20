@@ -1,6 +1,6 @@
 package me.tqqn.oitc.events;
 
-import me.tqqn.oitc.Messages;
+import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

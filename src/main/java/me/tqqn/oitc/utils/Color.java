@@ -1,4 +1,4 @@
-package me.tqqn.oitc;
+package me.tqqn.oitc.utils;
 
 import org.bukkit.ChatColor;
 

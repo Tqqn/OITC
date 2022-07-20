@@ -1,7 +1,6 @@
 package me.tqqn.oitc.commands;
 
-import lombok.RequiredArgsConstructor;
-import me.tqqn.oitc.GameState;
+import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.managers.GameManager;
 import org.bukkit.command.Command;

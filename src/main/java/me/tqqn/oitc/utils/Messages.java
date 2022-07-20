@@ -1,6 +1,4 @@
-package me.tqqn.oitc;
-
-import lombok.Getter;
+package me.tqqn.oitc.utils;
 
 public enum Messages {
 

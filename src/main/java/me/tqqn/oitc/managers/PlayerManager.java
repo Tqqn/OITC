@@ -1,7 +1,7 @@
 package me.tqqn.oitc.managers;
 
-import me.tqqn.oitc.Color;
-import me.tqqn.oitc.Messages;
+import me.tqqn.oitc.utils.Color;
+import me.tqqn.oitc.utils.Messages;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
