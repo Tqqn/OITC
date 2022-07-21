@@ -64,4 +64,21 @@ public class Arena {
             }
         }
     }
+
+    public boolean isArenaFull() {
+        return playersInArena.size() >= this.maximumPlayers;
+    }
+    public boolean canStart() {
+        return playersInArena.size() >= this.minimumPlayers;
+    }
+
+    public PluginPlayer getPlayerInArena(UUID uuid) {
+        return playersInArena.get(uuid);
+    }
+
+    public void wipeArenaStats() {
+        this.playersInArena.clear();
+        this.currentKills = 0;
+        this.winner = null;
+    }
 }

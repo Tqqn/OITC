@@ -1,29 +1,36 @@
 package me.tqqn.oitc.managers;
 
 import lombok.Getter;
+import me.tqqn.oitc.events.PlayerShootEvent;
 import me.tqqn.oitc.game.Arena;
 import me.tqqn.oitc.game.GameState;
+import me.tqqn.oitc.players.PlayerStats;
+import me.tqqn.oitc.players.PluginPlayer;
+import me.tqqn.oitc.tasks.*;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.events.PlayerHitListener;
 import me.tqqn.oitc.events.PlayerJoinListener;
 import me.tqqn.oitc.events.PlayerQuitListener;
-import me.tqqn.oitc.tasks.ActiveGameTask;
-import me.tqqn.oitc.tasks.CountdownTask;
-import me.tqqn.oitc.tasks.EndGameTask;
+import me.tqqn.oitc.utils.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.UUID;
+
 public class GameManager {
 
+    @Getter
     public GameState gameState = GameState.LOBBY;
 
     private final OITC plugin;
     @Getter
     private final PlayerManager playerManager;
     @Getter
+    private final ScoreboardManager scoreboardManager;
     private final Arena arena;
 
     private ActiveGameTask activeGameTask;
@@ -33,6 +40,7 @@ public class GameManager {
     public GameManager(OITC plugin) {
         this.plugin = plugin;
         this.playerManager = new PlayerManager(this);
+        this.scoreboardManager = new ScoreboardManager();
         PluginConfig pluginConfig = plugin.getPluginConfig();
         this.arena = new Arena(pluginConfig.getArenaName(),
                 pluginConfig.getMinimumPlayers(),
@@ -68,6 +76,65 @@ public class GameManager {
         this.gameState = gameState;
     }
 
+    public void addNewPlayerToArena(Player player) {
+        PlayerStats playerStats = new PlayerStats(player.getUniqueId());
+        PluginPlayer pluginPlayer = new PluginPlayer(player.getUniqueId(), player.getDisplayName(), playerStats);
+        this.arena.addPlayerToArena(pluginPlayer);
+
+        if (!scoreboardManager.doesPlayerHaveScoreboard(player.getUniqueId())) {
+            scoreboardManager.registerNewPlayerScoreboard(playerStats, player.getUniqueId());
+        }
+
+        this.playerManager.givePlayerBowAndArrow(player);
+        player.teleport(arena.getRandomSpawnLocation());
+    }
+
+    public boolean canJoin(Player player) {
+        if (isGameRunning()) return false;
+        if (!arena.isArenaFull()) return true;
+
+        return player.hasPermission(Permissions.JOIN_ARENA_FULL_PERMISSION.getPermission());
+    }
+
+    public void broadcast(String message) {
+        Bukkit.broadcastMessage(message);
+    }
+
+    public Location getRandomArenaSpawnLocation() {
+        return arena.getRandomSpawnLocation();
+    }
+
+    public boolean isArenaOnMaxKills() {
+        return arena.isMaxKills();
+    }
+
+    public boolean canGameStart() {
+        return arena.canStart();
+    }
+
+    public int getArenaMaxPlayers() {
+        return arena.getMaximumPlayers();
+    }
+
+    public PluginPlayer getPlayerInArena(UUID uuid) {
+        return arena.getPlayerInArena(uuid);
+    }
+
+    public void addKillToArenaKills() {
+        arena.addKillToCurrentKills();
+    }
+
+    public void startArrowCountdown(Player player) {
+        NewArrowTask newArrowTask = new NewArrowTask(player);
+        newArrowTask.runTaskLaterAsynchronously(plugin, 100);
+        ArrowXPCountdown arrowXPCountdown = new ArrowXPCountdown(player);
+        arrowXPCountdown.runTaskTimerAsynchronously(plugin, 0, 20);
+    }
+
+    private boolean isGameRunning() {
+        return gameState != GameState.LOBBY && gameState != GameState.STARTING;
+    }
+
     private void startCountdownToStartGame() {
         this.countdownTask = new CountdownTask(this);
         this.countdownTask.runTaskTimer(plugin, 0, 20);
@@ -76,6 +143,9 @@ public class GameManager {
     private void activeGameCountdown() {
         this.activeGameTask = new ActiveGameTask(plugin,this);
         this.activeGameTask.runTaskTimer(plugin, 0, 20);
+
+        UpdateScoreboardTask updateScoreboardTask = new UpdateScoreboardTask(this);
+        updateScoreboardTask.runTaskTimerAsynchronously(plugin, 0, 20);
     }
 
     private void endGame() {
@@ -89,15 +159,15 @@ public class GameManager {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.teleport(plugin.getPluginConfig().getLobbyLocation());
         }
-    }
-    public void broadcast(String message) {
-        Bukkit.broadcastMessage(message);
+        arena.wipeArenaStats();
+        scoreboardManager.clearScoreboards();
     }
 
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerHitListener(this),plugin);
-        pluginManager.registerEvents(new PlayerJoinListener(this, plugin), plugin);
+        pluginManager.registerEvents(new PlayerJoinListener(this), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
+        pluginManager.registerEvents(new PlayerShootEvent(this), plugin);
     }
 }

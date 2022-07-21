@@ -3,7 +3,6 @@ package me.tqqn.oitc.config;
 import me.tqqn.oitc.OITC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,31 +54,12 @@ public class PluginConfig {
 
     public Location getArenaSpawnLocation(String key) {
         return new Location(
-                getArenaWorld(),
-                getLocationX(key),
-                getLocationY(key),
-                getLocationZ(key),
-                getLocationPitch(key),
-                getLocationYaw(key));
-    }
-
-    private double getLocationX(String key) {
-        return plugin.getConfig().getDouble("arena.spawn-locations." + key + ".x");
-    }
-    private double getLocationY(String key) {
-        return plugin.getConfig().getDouble("arena.spawn-locations." + key + ".y");
-    }
-    private double getLocationZ(String key) {
-        return plugin.getConfig().getDouble("arena.spawn-locations." + key + ".z");
-    }
-    private float getLocationPitch(String key) {
-        return (float) plugin.getConfig().getDouble("arena.spawn-locations." + key + ".pitch");
-    }
-    private float getLocationYaw(String key) {
-        return (float) plugin.getConfig().getDouble("arena.spawn-locations." + key + ".yaw");
-    }
-    private World getArenaWorld() {
-        return Bukkit.getWorld(plugin.getConfig().getString("arena.world"));
+                Bukkit.getWorld(plugin.getConfig().getString("arena.world")),
+                plugin.getConfig().getDouble("arena.spawn-locations." + key + ".x"),
+                plugin.getConfig().getDouble("arena.spawn-locations." + key + ".y"),
+                plugin.getConfig().getDouble("arena.spawn-locations." + key + ".z"),
+                (float) plugin.getConfig().getDouble("arena.spawn-locations." + key + ".pitch"),
+                (float) plugin.getConfig().getDouble("arena.spawn-locations." + key + ".yaw"));
     }
 
     public Location getLobbyLocation() {

@@ -1,6 +1,8 @@
 package me.tqqn.oitc.events;
 
 import me.tqqn.oitc.game.GameState;
+import me.tqqn.oitc.players.PlayerStats;
+import me.tqqn.oitc.players.PluginPlayer;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
 import org.bukkit.entity.Player;
@@ -25,8 +27,14 @@ public class PlayerHitListener implements Listener {
         Player shooter = (Player) event.getDamager();
         Player hitPlayer = (Player) event.getEntity();
 
+        PlayerStats shooterstats = gameManager.getPlayerInArena(shooter.getUniqueId()).getPlayerStats();
+        PlayerStats hitplayerstats = gameManager.getPlayerInArena(hitPlayer.getUniqueId()).getPlayerStats();
+
+        shooterstats.addKill();
+        hitplayerstats.addDeath();
+
         hitPlayer.getInventory().clear();
-        hitPlayer.teleport(gameManager.getArena().getRandomSpawnLocation());
+        hitPlayer.teleport(gameManager.getRandomArenaSpawnLocation());
 
         gameManager.broadcast(Messages.GLOBAL_PLAYER_KILL_MESSAGE.getMessage(hitPlayer.getDisplayName(), shooter.getDisplayName()));
 
@@ -34,8 +42,9 @@ public class PlayerHitListener implements Listener {
 
         gameManager.getPlayerManager().givePlayerArrow(shooter);
 
-        if (gameManager.getArena().isMaxKills()) {
+        gameManager.addKillToArenaKills();
+
+        if (!gameManager.isArenaOnMaxKills()) return;
             gameManager.setGameState(GameState.END);
-        }
     }
 }

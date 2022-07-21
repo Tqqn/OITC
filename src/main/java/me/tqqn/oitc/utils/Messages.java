@@ -13,6 +13,7 @@ public enum Messages {
     WIN_MESSAGE(Color.translateColor("&f%%WINNER%% &6has won the game!"), "%%WINNER%%","",""),
     GAME_END_COUNTDOWN_MESSAGE(Color.translateColor("&cGame resets in &f%%SECONDS%%&f!"), "%%SECONDS%%","", ""),
     GAME_END_MESSAGE(Color.translateColor("&cGame has ended!"),"","", ""),
+    KICK_PLAYER_WHEN_ARENA_FULL(Color.translateColor("&cThis game is full."),"", "", ""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
 
 
