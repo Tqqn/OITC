@@ -131,7 +131,7 @@ public class GameManager {
         arrowXPCountdown.runTaskTimerAsynchronously(plugin, 0, 20);
     }
 
-    private boolean isGameRunning() {
+    public boolean isGameRunning() {
         return gameState != GameState.LOBBY && gameState != GameState.STARTING;
     }
 
