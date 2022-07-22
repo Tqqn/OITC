@@ -26,7 +26,6 @@ public class CountdownTask extends BukkitRunnable {
         if (startGameTime == 0) {
             cancel();
             gameManager.broadcast(Messages.GAME_START.getMessage());
-            giveAllOnlinePlayersKit();
             gameManager.setGameState(GameState.ACTIVE);
             return;
         }
@@ -34,11 +33,5 @@ public class CountdownTask extends BukkitRunnable {
         gameManager.broadcast(Messages.GAME_START_COUNTDOWN.getMessage(String.valueOf(startGameTime)));
 
         startGameTime--;
-    }
-
-    private void giveAllOnlinePlayersKit() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            playerManager.givePlayerBowAndArrow(player);
-        }
     }
 }

@@ -28,8 +28,6 @@ public class PlayerManager {
 
         player.getInventory().setItem(0, bow);
         player.getInventory().setItem(1, this.arrow);
-
-        player.sendMessage(Messages.GIVE_ITEM.getMessage());
     }
     public void givePlayerArrow(Player player) {
         player.getInventory().setItem(1, this.arrow);

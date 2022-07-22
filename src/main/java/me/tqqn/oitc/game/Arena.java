@@ -26,7 +26,7 @@ public class Arena {
     private PluginPlayer winner = null;
 
     private final List<Location> spawnLocations;
-
+    @Getter
     private final Map<UUID, PluginPlayer> playersInArena = new HashMap<>();
 
     public Arena(String displayName, int minimumPlayers, int maximumPlayers, int killsforgametoend, List<Location> spawnLocations) {

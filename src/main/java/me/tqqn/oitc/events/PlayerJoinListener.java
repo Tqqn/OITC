@@ -23,6 +23,7 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
 
         if (gameManager.canJoin(player)) {
+            player.getInventory().clear();
             gameManager.addNewPlayerToArena(player);
 
             int onlinePlayers = Bukkit.getOnlinePlayers().size();

@@ -62,7 +62,7 @@ public class GameManager {
                 break;
             case ACTIVE:
                 if (this.countdownTask != null) this.countdownTask.cancel();
-                activeGameCountdown();
+                startGame();
                 break;
             case END:
                 if (this.activeGameTask != null) this.activeGameTask.cancel();
@@ -85,7 +85,6 @@ public class GameManager {
             scoreboardManager.registerNewPlayerScoreboard(playerStats, player.getUniqueId());
         }
 
-        this.playerManager.givePlayerBowAndArrow(player);
         player.teleport(arena.getRandomSpawnLocation());
     }
 
@@ -126,7 +125,8 @@ public class GameManager {
 
     public void startArrowCountdown(Player player) {
         NewArrowTask newArrowTask = new NewArrowTask(player);
-        newArrowTask.runTaskLaterAsynchronously(plugin, 100);
+        newArrowTask.runTaskLaterAsynchronously(plugin, 200);
+
         ArrowXPCountdown arrowXPCountdown = new ArrowXPCountdown(player);
         arrowXPCountdown.runTaskTimerAsynchronously(plugin, 0, 20);
     }
@@ -140,12 +140,18 @@ public class GameManager {
         this.countdownTask.runTaskTimer(plugin, 0, 20);
     }
 
-    private void activeGameCountdown() {
+    private void startGame() {
         this.activeGameTask = new ActiveGameTask(plugin,this);
         this.activeGameTask.runTaskTimer(plugin, 0, 20);
 
         UpdateScoreboardTask updateScoreboardTask = new UpdateScoreboardTask(this);
         updateScoreboardTask.runTaskTimerAsynchronously(plugin, 0, 20);
+
+        for (PluginPlayer pluginPlayer : arena.getPlayersInArena().values()) {
+            Player player = Bukkit.getPlayer(pluginPlayer.getUuid());
+            playerManager.givePlayerBowAndArrow(player);
+        }
+
     }
 
     private void endGame() {
@@ -157,10 +163,9 @@ public class GameManager {
 
     private void restartGame() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.teleport(plugin.getPluginConfig().getLobbyLocation());
+            player.kickPlayer(Messages.KICK_PLAYER_ON_ENDGAME.getMessage());
         }
-        arena.wipeArenaStats();
-        scoreboardManager.clearScoreboards();
+        Bukkit.getServer().shutdown();
     }
 
     private void registerEvents() {

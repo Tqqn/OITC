@@ -16,9 +16,11 @@ public class ArrowXPCountdown extends BukkitRunnable {
     public void run() {
         if (countdown == 10) {
             player.setExp(0);
+            player.setLevel(0);
             cancel();
         }
-        player.giveExp(10);
+
+        player.setExp(1F / (countdown*10));
         countdown++;
     }
 }
