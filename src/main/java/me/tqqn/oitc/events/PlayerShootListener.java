@@ -6,12 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 
-public class PlayerShootEvent implements Listener {
+public class PlayerShootListener implements Listener {
 
 
     private final GameManager gameManager;
 
-    public PlayerShootEvent(GameManager gameManager) {
+    public PlayerShootListener(GameManager gameManager) {
         this.gameManager = gameManager;
     }
 

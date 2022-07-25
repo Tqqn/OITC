@@ -1,7 +1,7 @@
 package me.tqqn.oitc.managers;
 
 import lombok.Getter;
-import me.tqqn.oitc.events.PlayerShootEvent;
+import me.tqqn.oitc.events.PlayerShootListener;
 import me.tqqn.oitc.game.Arena;
 import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.players.PlayerStats;
@@ -57,21 +57,19 @@ public class GameManager {
         if (this.gameState == GameState.ACTIVE && gameState == GameState.STARTING) return;
 
         switch (gameState) {
-            case STARTING:
-                startCountdownToStartGame();
-                break;
-            case ACTIVE:
+            case STARTING -> startCountdownToStartGame();
+            case ACTIVE -> {
                 if (this.countdownTask != null) this.countdownTask.cancel();
                 startGame();
-                break;
-            case END:
+            }
+            case END -> {
                 if (this.activeGameTask != null) this.activeGameTask.cancel();
                 endGame();
-                break;
-            case RESTARTING:
+            }
+            case RESTARTING -> {
                 if (this.endGameTask != null) this.endGameTask.cancel();
                 restartGame();
-                break;
+            }
         }
         this.gameState = gameState;
     }
@@ -124,10 +122,11 @@ public class GameManager {
     }
 
     public void startArrowCountdown(Player player) {
-        NewArrowTask newArrowTask = new NewArrowTask(player);
-        newArrowTask.runTaskLaterAsynchronously(plugin, 200);
 
-        ArrowXPCountdown arrowXPCountdown = new ArrowXPCountdown(player);
+        PluginPlayer pluginPlayer = arena.getPlayerInArena(player.getUniqueId());
+
+        if (pluginPlayer.isArrowCountdown()) return;
+        ArrowCountdownTask arrowXPCountdown = new ArrowCountdownTask(pluginPlayer);
         arrowXPCountdown.runTaskTimerAsynchronously(plugin, 0, 20);
     }
 
@@ -149,9 +148,9 @@ public class GameManager {
 
         for (PluginPlayer pluginPlayer : arena.getPlayersInArena().values()) {
             Player player = Bukkit.getPlayer(pluginPlayer.getUuid());
+            if (player == null) return;
             playerManager.givePlayerBowAndArrow(player);
         }
-
     }
 
     private void endGame() {
@@ -173,6 +172,6 @@ public class GameManager {
         pluginManager.registerEvents(new PlayerHitListener(this),plugin);
         pluginManager.registerEvents(new PlayerJoinListener(this), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
-        pluginManager.registerEvents(new PlayerShootEvent(this), plugin);
+        pluginManager.registerEvents(new PlayerShootListener(this), plugin);
     }
 }

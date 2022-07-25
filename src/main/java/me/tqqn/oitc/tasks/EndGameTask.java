@@ -23,7 +23,6 @@ public class EndGameTask extends BukkitRunnable {
         if (endCountdown == 0) {
             cancel();
             clearPlayerInventory();
-            //kickAllPlayers();
             gameManager.setGameState(GameState.RESTARTING);
 
             return;

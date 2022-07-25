@@ -76,9 +76,4 @@ public class Arena {
         return playersInArena.get(uuid);
     }
 
-    public void wipeArenaStats() {
-        this.playersInArena.clear();
-        this.currentKills = 0;
-        this.winner = null;
-    }
 }

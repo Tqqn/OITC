@@ -5,6 +5,8 @@ import me.tqqn.oitc.players.PlayerStats;
 import me.tqqn.oitc.players.PluginPlayer;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,30 +23,40 @@ public class PlayerHitListener implements Listener {
 
     @EventHandler
     public void onArrowHit(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player && event.getDamager() instanceof Player)) return;
-        if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE)) return;
 
-        Player shooter = (Player) event.getDamager();
-        Player hitPlayer = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player player))
+            return;
+
+        event.setDamage(0);
+        if (!(event.getDamager() instanceof Arrow arrow))
+            return;
+
+        if (!(arrow.getShooter() instanceof Player shooter)) return;
+
+        if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE))
+            return;
 
         PlayerStats shooterstats = gameManager.getPlayerInArena(shooter.getUniqueId()).getPlayerStats();
-        PlayerStats hitplayerstats = gameManager.getPlayerInArena(hitPlayer.getUniqueId()).getPlayerStats();
+        PlayerStats hitplayerstats = gameManager.getPlayerInArena(player.getUniqueId()).getPlayerStats();
 
         shooterstats.addKill();
         hitplayerstats.addDeath();
 
-        hitPlayer.getInventory().clear();
-        hitPlayer.teleport(gameManager.getRandomArenaSpawnLocation());
+        player.getInventory().clear();
+        player.teleport(gameManager.getRandomArenaSpawnLocation());
 
-        gameManager.broadcast(Messages.GLOBAL_PLAYER_KILL_MESSAGE.getMessage(hitPlayer.getDisplayName(), shooter.getDisplayName()));
+        gameManager.broadcast(Messages.GLOBAL_PLAYER_KILL_MESSAGE.getMessage(player.getDisplayName(), shooter.getDisplayName()));
 
-        gameManager.getPlayerManager().givePlayerBowAndArrow(hitPlayer);
+        gameManager.getPlayerManager().givePlayerBowAndArrow(player);
 
         gameManager.getPlayerManager().givePlayerArrow(shooter);
 
         gameManager.addKillToArenaKills();
 
         if (!gameManager.isArenaOnMaxKills()) return;
-            gameManager.setGameState(GameState.END);
+
+        gameManager.setGameState(GameState.END);
+
+            event.setCancelled(true);
     }
 }
