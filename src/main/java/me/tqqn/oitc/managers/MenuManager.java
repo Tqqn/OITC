@@ -1,6 +1,6 @@
 package me.tqqn.oitc.managers;
 
-import me.tqqn.oitc.menu.Menu;
+import me.tqqn.oitc.menubuilder.Menu;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package me.tqqn.oitc.events;
+package me.tqqn.oitc.game.gameevents;
 
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;

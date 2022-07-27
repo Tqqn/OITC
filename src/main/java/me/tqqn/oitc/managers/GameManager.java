@@ -1,18 +1,19 @@
 package me.tqqn.oitc.managers;
 
 import lombok.Getter;
-import me.tqqn.oitc.events.PlayerShootListener;
+import me.tqqn.oitc.game.gameevents.PlayerShootListener;
 import me.tqqn.oitc.game.Arena;
 import me.tqqn.oitc.game.GameState;
+import me.tqqn.oitc.menubuilder.MenuListener;
 import me.tqqn.oitc.players.PlayerStats;
 import me.tqqn.oitc.players.PluginPlayer;
 import me.tqqn.oitc.tasks.*;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.config.PluginConfig;
-import me.tqqn.oitc.events.PlayerHitListener;
-import me.tqqn.oitc.events.PlayerJoinListener;
-import me.tqqn.oitc.events.PlayerQuitListener;
+import me.tqqn.oitc.game.gameevents.PlayerHitListener;
+import me.tqqn.oitc.game.gameevents.PlayerJoinListener;
+import me.tqqn.oitc.game.gameevents.PlayerQuitListener;
 import me.tqqn.oitc.utils.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -173,5 +174,6 @@ public class GameManager {
         pluginManager.registerEvents(new PlayerJoinListener(this), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
         pluginManager.registerEvents(new PlayerShootListener(this), plugin);
+        pluginManager.registerEvents(new MenuListener(), plugin);
     }
 }

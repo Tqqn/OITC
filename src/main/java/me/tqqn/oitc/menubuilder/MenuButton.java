@@ -1,4 +1,4 @@
-package me.tqqn.oitc.menu;
+package me.tqqn.oitc.menubuilder;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

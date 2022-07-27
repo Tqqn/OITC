@@ -14,8 +14,12 @@ public enum Messages {
     GAME_END_COUNTDOWN_MESSAGE(Color.translateColor("&cGame resets in &f%%SECONDS%%&f!"), "%%SECONDS%%","", ""),
     GAME_END_MESSAGE(Color.translateColor("&cGame has ended!"),"","", ""),
     KICK_PLAYER_WHEN_ARENA_FULL(Color.translateColor("&cThis game is full."),"", "", ""),
+    SETUP_MENU_NAME(Color.translateColor("&cSetup-Menu"), "", "", ""),
+    OPEN_SETUP_MENU(Color.translateColor("&cYou opened the &lSetup Menu &r&c."),"","",""),
+    CLOSE_SETUP_MENU(Color.translateColor("&cYou closed the &lSetup Menu &r&c."),"","",""),
+    ENTER_SETUP_MODE(Color.translateColor("&cYou entered the setup mode."), "", "", ""),
+    EXIT_SETUP_MODE(Color.translateColor("&cYou exited the setup mode."), "", "", ""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
-
 
 
     private final String message;

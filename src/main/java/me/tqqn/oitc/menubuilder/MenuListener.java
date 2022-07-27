@@ -1,4 +1,4 @@
-package me.tqqn.oitc.menu;
+package me.tqqn.oitc.menubuilder;
 
 import me.tqqn.oitc.managers.MenuManager;
 import org.bukkit.entity.Player;

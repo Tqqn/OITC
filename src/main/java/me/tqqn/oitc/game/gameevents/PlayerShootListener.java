@@ -1,4 +1,4 @@
-package me.tqqn.oitc.events;
+package me.tqqn.oitc.game.gameevents;
 
 import me.tqqn.oitc.managers.GameManager;
 import org.bukkit.entity.Player;

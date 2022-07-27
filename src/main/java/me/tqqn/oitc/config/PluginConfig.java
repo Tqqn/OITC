@@ -1,6 +1,7 @@
 package me.tqqn.oitc.config;
 
 import me.tqqn.oitc.OITC;
+import me.tqqn.oitc.game.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -14,6 +15,10 @@ public class PluginConfig {
     public PluginConfig(OITC plugin) {
         this.plugin = plugin;
         plugin.saveDefaultConfig();
+    }
+
+    public String getMode() {
+        return plugin.getConfig().getString("plugin-mode");
     }
 
     public String getDataBaseName() {
@@ -70,6 +75,19 @@ public class PluginConfig {
                 plugin.getConfig().getDouble("lobby.z"),
                 (float) plugin.getConfig().getDouble("lobby.pitch"),
                 (float) plugin.getConfig().getDouble("lobby.yaw"));
+    }
+
+    public void saveLocations(List<Location> spawnLocations) {
+        int i = 0;
+        plugin.getConfig().set("arena.world", spawnLocations.get(0).getWorld().getName());
+        for (Location location : spawnLocations) {
+            plugin.getConfig().set("arena.spawn-locations." + i + ".x", location.getX());
+            plugin.getConfig().set("arena.spawn-locations." + i + ".y", location.getY());
+            plugin.getConfig().set("arena.spawn-locations." + i + ".z", location.getZ());
+            plugin.getConfig().set("arena.spawn-locations." + i + ".pitch", location.getPitch());
+            plugin.getConfig().set("arena.spawn-locations." + i + ".yaw", location.getYaw());
+            i++;
+        }
     }
 
     public int getGameDuration() {

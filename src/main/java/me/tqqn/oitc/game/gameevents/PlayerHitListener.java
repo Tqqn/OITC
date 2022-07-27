@@ -1,11 +1,9 @@
-package me.tqqn.oitc.events;
+package me.tqqn.oitc.game.gameevents;
 
 import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.players.PlayerStats;
-import me.tqqn.oitc.players.PluginPlayer;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
