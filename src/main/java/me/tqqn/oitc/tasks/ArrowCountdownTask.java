@@ -37,7 +37,8 @@ public class ArrowCountdownTask extends BukkitRunnable {
             return;
         }
 
-        player.setExp(1.0f/ globalXPCountdown/10);
+        player.setExp(1.0f / (globalXPCountdown / 10));
+        player.setLevel(0);
         globalXPCountdown--;
     }
 }
