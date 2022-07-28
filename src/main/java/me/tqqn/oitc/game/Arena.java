@@ -59,8 +59,8 @@ public class Arena {
             if (winner == null) {
                 winner = player;
             }
-            if (!(player.getPlayerStats().getKills() < winner.getPlayerStats().getKills())) {
-                this.winner = winner;
+            if (player.getPlayerStats().getKills() > winner.getPlayerStats().getKills()) {
+                this.winner = player;
             }
         }
     }

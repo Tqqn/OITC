@@ -6,6 +6,7 @@ import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.managers.GameManager;
 import me.tqqn.oitc.setupwizard.SetupManager;
 import me.tqqn.oitc.utils.Color;
+import me.tqqn.oitc.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +24,15 @@ public final class OITC extends JavaPlugin {
         switch (pluginConfig.getMode()) {
             case "active" -> this.gameManager = new GameManager(this);
             case "setup" -> this.setupManager = new SetupManager(this);
+            default -> {
+                Bukkit.getLogger().info(Messages.NO_MODE_SELECTED.getMessage());
+                try {
+                    getServer().getPluginManager().disablePlugin(this);
+                } catch (IllegalStateException exception) {
+                    Bukkit.getLogger().info("disabled.");
+                }
+            }
+
         }
         registerCommands();
 
@@ -31,6 +41,9 @@ public final class OITC extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (setupManager != null) {
+            setupManager.removeSetupItemsFromAllPlayers();
+        }
         sendDisableMessage();
     }
 

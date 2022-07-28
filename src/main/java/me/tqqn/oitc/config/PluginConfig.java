@@ -87,6 +87,7 @@ public class PluginConfig {
             plugin.getConfig().set("arena.spawn-locations." + i + ".pitch", location.getPitch());
             plugin.getConfig().set("arena.spawn-locations." + i + ".yaw", location.getYaw());
             i++;
+            plugin.saveConfig();
         }
     }
 
@@ -97,6 +98,8 @@ public class PluginConfig {
         plugin.getConfig().set("lobby.z", location.getZ());
         plugin.getConfig().set("lobby.pitch", location.getPitch());
         plugin.getConfig().set("lobby.yaw", location.getYaw());
+
+        plugin.saveConfig();
     }
 
     public int getGameDuration() {

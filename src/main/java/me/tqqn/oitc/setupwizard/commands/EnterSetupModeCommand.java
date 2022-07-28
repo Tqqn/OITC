@@ -2,6 +2,7 @@ package me.tqqn.oitc.setupwizard.commands;
 
 import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.setupwizard.SetupManager;
+import me.tqqn.oitc.utils.Permissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,8 @@ public class EnterSetupModeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) return true;
+
+        if (!player.hasPermission(Permissions.COMMAND_SETUP_PERMISSION.getPermission())) return true;
 
         if (setupManager.isPlayerInSetupMode(player.getUniqueId())) {
             setupManager.removeSetupItems(player);

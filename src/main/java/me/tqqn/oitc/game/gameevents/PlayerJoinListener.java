@@ -26,6 +26,8 @@ public class PlayerJoinListener implements Listener {
             player.getInventory().clear();
             gameManager.addNewPlayerToArena(player);
 
+            player.teleport(gameManager.getLobbyLocation());
+
             int onlinePlayers = Bukkit.getOnlinePlayers().size();
 
             gameManager.broadcast(Messages.PLAYER_JOIN.getMessage(String.valueOf(onlinePlayers), String.valueOf(gameManager.getArenaMaxPlayers()), player.getDisplayName()));

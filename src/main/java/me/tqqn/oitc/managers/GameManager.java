@@ -102,6 +102,10 @@ public class GameManager {
         return arena.getRandomSpawnLocation();
     }
 
+    public Location getLobbyLocation() {
+        return plugin.getPluginConfig().getLobbyLocation();
+    }
+
     public boolean isArenaOnMaxKills() {
         return arena.isMaxKills();
     }
@@ -135,6 +139,10 @@ public class GameManager {
         return gameState != GameState.LOBBY && gameState != GameState.STARTING;
     }
 
+    public boolean isGameActive() {
+        return gameState == GameState.ACTIVE;
+    }
+
     private void startCountdownToStartGame() {
         this.countdownTask = new CountdownTask(this);
         this.countdownTask.runTaskTimer(plugin, 0, 20);
@@ -150,6 +158,7 @@ public class GameManager {
         for (PluginPlayer pluginPlayer : arena.getPlayersInArena().values()) {
             Player player = Bukkit.getPlayer(pluginPlayer.getUuid());
             if (player == null) return;
+            player.teleport(getRandomArenaSpawnLocation());
             playerManager.givePlayerBowAndArrow(player);
         }
     }

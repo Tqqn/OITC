@@ -19,7 +19,7 @@ public class PlayerInteractListener implements Listener {
 
     private final List<Location> arenaLocations = new ArrayList<>();
 
-    private Location lobbyLocation;
+    private Location lobbyLocation = null;
 
     public PlayerInteractListener(SetupManager setupManager) {
         this.setupManager = setupManager;
@@ -31,27 +31,32 @@ public class PlayerInteractListener implements Listener {
 
         if (!setupManager.isPlayerInSetupMode(player.getUniqueId())) return;
 
-        if (event.getAction() != Action.RIGHT_CLICK_AIR || event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-        if (PluginItems.SET_LOBBY_LOCATION_ITEM.getItemStack().isSimilar(player.getInventory().getItemInMainHand())) {
-            lobbyLocation = player.getLocation();
-            player.sendMessage(Messages.SELECT_LOBBY_LOCATION_SETUP_MODE.getMessage());
-            return;
-        }
-        if (PluginItems.SET_ARENA_LOCATION_ITEM.getItemStack().isSimilar(player.getInventory().getItemInMainHand())) {
-            arenaLocations.add(player.getLocation());
-            player.sendMessage(Messages.SELECT_ARENA_LOCATION_SETUP_MODE.getMessage());
-            return;
-        }
-        if (PluginItems.SAVE_ITEM.getItemStack().isSimilar(player.getInventory().getItemInMainHand())) {
-            if (lobbyLocation == null) {
-                player.sendMessage(Messages.NO_LOBBY_LOCATION_SETUP_MODE.getMessage());
-                return;
+            if (PluginItems.SET_LOBBY_LOCATION_ITEM.getItemStack().isSimilar(player.getInventory().getItemInMainHand())) {
+                this.lobbyLocation = player.getLocation();
+                player.sendMessage(Messages.SELECT_LOBBY_LOCATION_SETUP_MODE.getMessage());
+                event.setCancelled(true);
             }
-            setupManager.getPluginConfig().saveLobbyLocation(lobbyLocation);
-            setupManager.getPluginConfig().saveArenaLocations(arenaLocations);
-            arenaLocations.clear();
-            this.lobbyLocation = null;
+            if (PluginItems.SET_ARENA_LOCATION_ITEM.getItemStack().isSimilar(player.getInventory().getItemInMainHand())) {
+                arenaLocations.add(player.getLocation());
+                player.sendMessage(Messages.SELECT_ARENA_LOCATION_SETUP_MODE.getMessage());
+                event.setCancelled(true);
+            }
+            if (PluginItems.SAVE_ITEM.getItemStack().isSimilar(player.getInventory().getItemInMainHand())) {
+                if (lobbyLocation == null) {
+                    player.sendMessage(Messages.NO_LOBBY_LOCATION_SETUP_MODE.getMessage());
+                    event.setCancelled(true);
+                    return;
+                }
+                player.sendMessage(Messages.SAVE_SETUP_MODE.getMessage());
+                setupManager.getPluginConfig().saveLobbyLocation(lobbyLocation);
+                setupManager.getPluginConfig().saveArenaLocations(arenaLocations);
+                arenaLocations.clear();
+                this.lobbyLocation = null;
+                event.setCancelled(true);
+            }
+
         }
     }
 }

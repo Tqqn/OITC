@@ -4,7 +4,7 @@ import lombok.Getter;
 
 public enum Permissions {
 
-    SETUP_COMMAND_PERMISSION("oitc.setup.mode"),
+    COMMAND_SETUP_PERMISSION("oitc.setup.mode"),
     JOIN_SETUP_MODE_PERMISSION("oitc.setup.join"),
     JOIN_ARENA_FULL_PERMISSION("oitc.arena.full");
 

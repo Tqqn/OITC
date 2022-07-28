@@ -1,10 +1,10 @@
 #Plugin-mode game or setup
-plugin-mode: 'game'
+plugin-mode: ''
 #Database credentials:
 database:
   name: ''
   host: ''
-  port:
+  port: ''
   username: ''
   password: ''
 lobby:
@@ -16,10 +16,10 @@ lobby:
   yaw:
 arena:
   name: ''
-  minimumPlayers:
-  maximumPlayers:
-  killsToEndGame:
-  world:
+  minimumPlayers: ''
+  maximumPlayers: ''
+  killsToEndGame: ''
+  world: ''
   spawn-locations:
     1:
       x:

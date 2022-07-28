@@ -8,3 +8,7 @@ commands:
     description: Start Command
     usage: /<command>
     permission: oitc.start
+  setup:
+    description: Setup Command
+    usage: /<command>
+    permission: oitc.setup.mode

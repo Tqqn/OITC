@@ -4,6 +4,7 @@ import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.players.PlayerStats;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +23,12 @@ public class PlayerHitListener implements Listener {
     @EventHandler
     public void onArrowHit(EntityDamageByEntityEvent event) {
 
-        if (!(event.getEntity() instanceof Player player))
+        if (!gameManager.isGameActive()) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (!(event.getEntity() instanceof Player player) || player.getGameMode() == GameMode.CREATIVE)
             return;
 
         event.setDamage(0);
@@ -33,6 +39,11 @@ public class PlayerHitListener implements Listener {
 
         if (!(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE))
             return;
+
+        if (shooter == player) {
+            event.setCancelled(true);
+            return;
+        }
 
         PlayerStats shooterstats = gameManager.getPlayerInArena(shooter.getUniqueId()).getPlayerStats();
         PlayerStats hitplayerstats = gameManager.getPlayerInArena(player.getUniqueId()).getPlayerStats();
@@ -51,10 +62,10 @@ public class PlayerHitListener implements Listener {
 
         gameManager.addKillToArenaKills();
 
+        event.setCancelled(true);
+
         if (!gameManager.isArenaOnMaxKills()) return;
 
         gameManager.setGameState(GameState.END);
-
-            event.setCancelled(true);
     }
 }
