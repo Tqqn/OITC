@@ -1,8 +1,13 @@
 package me.tqqn.oitc.setupwizard;
 
+import lombok.Getter;
 import me.tqqn.oitc.OITC;
+import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.items.PluginItems;
 import me.tqqn.oitc.setupwizard.commands.EnterSetupModeCommand;
+import me.tqqn.oitc.setupwizard.events.PlayerInteractListener;
+import me.tqqn.oitc.setupwizard.events.PlayerJoinListener;
+import me.tqqn.oitc.setupwizard.events.PlayerQuitListener;
 import me.tqqn.oitc.utils.Messages;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -15,15 +20,19 @@ public class SetupManager {
     private final Map<UUID, Inventory> playerInventories = new HashMap<>();
     private final List<UUID> playersInSetupMode = new ArrayList<>();
     private final OITC plugin;
+    @Getter
+    private final PluginConfig pluginConfig;
 
     public SetupManager(OITC plugin) {
         this.plugin = plugin;
+        this.pluginConfig = plugin.getPluginConfig();
         registerEvents();
         registerCommands();
     }
 
     public void addSetupItems(Player player) {
         this.playerInventories.put(player.getUniqueId(), player.getInventory());
+        this.playersInSetupMode.add(player.getUniqueId());
 
         player.getInventory().clear();
         player.getInventory().setItem(0, PluginItems.SET_LOBBY_LOCATION_ITEM.getItemStack());
@@ -39,6 +48,8 @@ public class SetupManager {
         player.getInventory().setContents(inventory.getContents());
 
         player.sendMessage(Messages.ENTER_SETUP_MODE.getMessage());
+        this.playerInventories.remove(player.getUniqueId());
+        this.playersInSetupMode.remove(player.getUniqueId());
     }
 
     public boolean isPlayerInSetupMode(UUID uuid) {
@@ -47,6 +58,9 @@ public class SetupManager {
 
     private void registerEvents() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
+        pluginManager.registerEvents(new PlayerInteractListener(this),plugin);
+        pluginManager.registerEvents(new PlayerJoinListener(), plugin);
+        pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
     }
 
     private void registerCommands() {

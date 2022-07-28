@@ -77,7 +77,7 @@ public class PluginConfig {
                 (float) plugin.getConfig().getDouble("lobby.yaw"));
     }
 
-    public void saveLocations(List<Location> spawnLocations) {
+    public void saveArenaLocations(List<Location> spawnLocations) {
         int i = 0;
         plugin.getConfig().set("arena.world", spawnLocations.get(0).getWorld().getName());
         for (Location location : spawnLocations) {
@@ -88,6 +88,15 @@ public class PluginConfig {
             plugin.getConfig().set("arena.spawn-locations." + i + ".yaw", location.getYaw());
             i++;
         }
+    }
+
+    public void saveLobbyLocation(Location location) {
+        plugin.getConfig().set("lobby.world", location.getWorld().getName());
+        plugin.getConfig().set("lobby.x", location.getX());
+        plugin.getConfig().set("lobby.y", location.getY());
+        plugin.getConfig().set("lobby.z", location.getZ());
+        plugin.getConfig().set("lobby.pitch", location.getPitch());
+        plugin.getConfig().set("lobby.yaw", location.getYaw());
     }
 
     public int getGameDuration() {

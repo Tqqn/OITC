@@ -19,6 +19,11 @@ public enum Messages {
     CLOSE_SETUP_MENU(Color.translateColor("&cYou closed the &lSetup Menu &r&c."),"","",""),
     ENTER_SETUP_MODE(Color.translateColor("&cYou entered the setup mode."), "", "", ""),
     EXIT_SETUP_MODE(Color.translateColor("&cYou exited the setup mode."), "", "", ""),
+    KICK_PLAYER_WHEN_SETUP_MODE(Color.translateColor("&cServer is in setup mode."), "", "", ""),
+    SAVE_SETUP_MODE(Color.translateColor("&cYou saved the selected locations."),"", "", ""),
+    SELECT_LOBBY_LOCATION_SETUP_MODE(Color.translateColor("&cSelected lobby location."), "", "", ""),
+    SELECT_ARENA_LOCATION_SETUP_MODE(Color.translateColor("&cSelected arena location."), "", "", ""),
+    NO_LOBBY_LOCATION_SETUP_MODE(Color.translateColor("&cLobby location is null. Please select a location."),"", "", ""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
 
 
