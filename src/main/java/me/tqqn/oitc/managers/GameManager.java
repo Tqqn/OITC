@@ -1,7 +1,7 @@
 package me.tqqn.oitc.managers;
 
 import lombok.Getter;
-import me.tqqn.oitc.game.gameevents.PlayerShootListener;
+import me.tqqn.oitc.game.gameevents.*;
 import me.tqqn.oitc.game.Arena;
 import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.menubuilder.MenuListener;
@@ -11,15 +11,14 @@ import me.tqqn.oitc.tasks.*;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.config.PluginConfig;
-import me.tqqn.oitc.game.gameevents.PlayerHitListener;
-import me.tqqn.oitc.game.gameevents.PlayerJoinListener;
-import me.tqqn.oitc.game.gameevents.PlayerQuitListener;
 import me.tqqn.oitc.utils.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class GameManager {
@@ -184,5 +183,7 @@ public class GameManager {
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
         pluginManager.registerEvents(new PlayerShootListener(this), plugin);
         pluginManager.registerEvents(new MenuListener(), plugin);
+        pluginManager.registerEvents(new CreatureSpawnListener(), plugin);
+        pluginManager.registerEvents(new PlayerDamageListener(), plugin);
     }
 }

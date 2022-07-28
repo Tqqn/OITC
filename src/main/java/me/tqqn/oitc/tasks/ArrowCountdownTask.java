@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ArrowCountdownTask extends BukkitRunnable {
 
-    private int globalXPCountdown = 10;
+    private int globalXPCountdown = 0;
     private final PluginPlayer pluginPlayer;
     private final Player player;
 
@@ -28,7 +28,7 @@ public class ArrowCountdownTask extends BukkitRunnable {
         pluginPlayer.setArrowCountdown(true);
         player.sendMessage("Arrow cooldown");
 
-        if (globalXPCountdown == 0) {
+        if (globalXPCountdown == 10) {
             cancel();
             player.setExp(0);
             player.setLevel(0);
@@ -38,6 +38,6 @@ public class ArrowCountdownTask extends BukkitRunnable {
         }
 
         player.setExp((float) globalXPCountdown / 10);
-        globalXPCountdown--;
+        globalXPCountdown++;
     }
 }
