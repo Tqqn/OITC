@@ -18,9 +18,9 @@ public class PlayerShootListener implements Listener {
     @EventHandler
     public void onShoot(EntityShootBowEvent event) {
         if (!gameManager.isGameRunning()) return;
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
 
-        Player player = (Player) event.getEntity();
+        if (event.getProjectile().isOnGround()) return;
 
         gameManager.startArrowCountdown(player);
     }

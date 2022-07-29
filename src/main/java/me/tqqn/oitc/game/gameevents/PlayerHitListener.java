@@ -45,11 +45,14 @@ public class PlayerHitListener implements Listener {
             return;
         }
 
-        PlayerStats shooterstats = gameManager.getPlayerInArena(shooter.getUniqueId()).getPlayerStats();
-        PlayerStats hitplayerstats = gameManager.getPlayerInArena(player.getUniqueId()).getPlayerStats();
+        PlayerStats shooterStats = gameManager.getPlayerInArena(shooter.getUniqueId()).getPlayerStats();
+        PlayerStats hitPlayerStats = gameManager.getPlayerInArena(player.getUniqueId()).getPlayerStats();
 
-        shooterstats.addKill();
-        hitplayerstats.addDeath();
+        shooterStats.addKill();
+        hitPlayerStats.addDeath();
+
+        gameManager.getPlayerManager().sendDeathTitleToPlayer(player);
+        gameManager.getPlayerManager().sendKillTitleToPlayer(shooter);
 
         player.getInventory().clear();
         player.teleport(gameManager.getRandomArenaSpawnLocation());

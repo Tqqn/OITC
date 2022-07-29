@@ -32,4 +32,14 @@ public class PlayerManager {
     public void givePlayerArrow(Player player) {
         player.getInventory().setItem(1, this.arrow);
     }
+
+    public void sendDeathTitleToPlayer(Player player) {
+        player.resetTitle();
+        player.sendTitle(Messages.DEATH_TITLE.getMessage(),"", 20, 70, 20);
+    }
+
+    public void sendKillTitleToPlayer(Player player) {
+        player.resetTitle();
+        player.sendTitle(Messages.KILL_TITLE.getMessage(),"", 20, 70, 20);
+    }
 }

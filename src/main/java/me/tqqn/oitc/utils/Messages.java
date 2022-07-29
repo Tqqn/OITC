@@ -26,6 +26,8 @@ public enum Messages {
     NO_LOBBY_LOCATION_SETUP_MODE(Color.translateColor("&cLobby location is null. Please select a location."),"", "", ""),
     REMOVE_SETUP_ITEMS_FROM_PLAYER(Color.translateColor("&cRemoved setup items from &f&l%%PLAYER%%"), "%%PLAYER%%","",""),
     NO_MODE_SELECTED(Color.translateColor("&cNo selected mode found in config."), "","",""),
+    KILL_TITLE(Color.translateColor("&a&l+1 Kill"), "","",""),
+    DEATH_TITLE(Color.translateColor("&c&l+1 Death"), "","",""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
 
 
