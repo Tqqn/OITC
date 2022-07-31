@@ -5,8 +5,8 @@ public enum Messages {
     NO_PERMISSION(Color.translateColor("&cYou have currently no permission to use this command."),"", "", ""),
     GAME_START_COUNTDOWN(Color.translateColor("&cGame is starting in &f%%SECONDS%%"),"%%SECONDS%%", "", ""),
     GAME_START(Color.translateColor("&cGame started!"),"", "", ""),
-    PLAYER_JOIN(Color.translateColor("&f%%JOINED_PLAYER_COUNT%%&c/&f%%PLAYERS_IN_ARENA_COUNT%% &f%%PLAYER%% &6has joined the game."),"%%JOINED_PLAYER_COUNT%%", "%%PLAYERS_IN_ARENA_COUNT%%", "%%PLAYER%%"),
-    PLAYER_LEAVE(Color.translateColor("&f%%PLAYER%% &6has left the game."),"%%PLAYER%%", "", ""),
+    PLAYER_JOIN(Color.translateColor("&7%%PLAYER%% &ehas joined (&b%%JOINED_PLAYER_COUNT%%&e/&b%%PLAYERS_IN_ARENA_COUNT%%&e)"),"%%JOINED_PLAYER_COUNT%%", "%%PLAYERS_IN_ARENA_COUNT%%", "%%PLAYER%%"),
+    PLAYER_LEAVE(Color.translateColor("&7%%PLAYER%% &6has left."),"%%PLAYER%%", "", ""),
     GAME_END_COUNTDOWN(Color.translateColor("&cGame is ending in &f%%SECONDS%%"),"%%SECONDS%%", "", ""),
     KICK_PLAYER_ON_ENDGAME(Color.translateColor("&cGame is restarting!"),"", "", ""),
     GLOBAL_PLAYER_KILL_MESSAGE(Color.translateColor("&f%%DEATH_PLAYER%% &6has been shot by &f%%KILLER%%"), "%%DEATH_PLAYER%%","%%KILLER%%", ""),
@@ -26,8 +26,9 @@ public enum Messages {
     NO_LOBBY_LOCATION_SETUP_MODE(Color.translateColor("&cLobby location is null. Please select a location."),"", "", ""),
     REMOVE_SETUP_ITEMS_FROM_PLAYER(Color.translateColor("&cRemoved setup items from &f&l%%PLAYER%%"), "%%PLAYER%%","",""),
     NO_MODE_SELECTED(Color.translateColor("&cNo selected mode found in config."), "","",""),
-    KILL_TITLE(Color.translateColor("&a&l+1 Kill"), "","",""),
-    DEATH_TITLE(Color.translateColor("&c&l+1 Death"), "","",""),
+    TITLE_KILLER_PLAYER(Color.translateColor("&a&l+1 Kill"), "","",""),
+    TITLE_DEATH_PLAYER(Color.translateColor("&c&l+1 Death"), "","",""),
+    TITLE_PLAYER_WIN(Color.translateColor("&aYou won!"),"","",""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
 
 

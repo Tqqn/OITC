@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 
 public enum PluginItems {
 
+    PLAYER_ARROW("&cOITC Arrow", Material.ARROW, null, false, 1),
+    PLAYER_BOW("&cOITC Bow", Material.BOW, null, false, 1),
     SET_LOBBY_LOCATION_ITEM("&cSet Lobby Location", Material.BOOK, new String[]{"&6Sets Lobby Spawn location"}, true, 1),
     SAVE_ITEM("&cSave", Material.NETHER_STAR, new String[]{"&6Saves locations."}, true, 1),
     SET_ARENA_LOCATION_ITEM("&cSet Arena Locations", Material.FEATHER, new String[]{"&6Sets Arena Spawn locations"}, true, 1);

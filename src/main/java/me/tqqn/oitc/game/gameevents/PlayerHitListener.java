@@ -4,6 +4,7 @@ import me.tqqn.oitc.game.GameState;
 import me.tqqn.oitc.players.PlayerStats;
 import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
+import me.tqqn.oitc.utils.Sounds;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -65,9 +66,12 @@ public class PlayerHitListener implements Listener {
 
         gameManager.addKillToArenaKills();
 
+        Sounds.PLAYER_KILL.playPacketSound(shooter);
+        Sounds.PLAYER_DEATH.playPacketSound(player);
+
         event.setCancelled(true);
 
-        if (!gameManager.isArenaOnMaxKills()) return;
+        if (!gameManager.isArenaOnMaxKills(shooterStats)) return;
 
         gameManager.setGameState(GameState.END);
     }

@@ -26,7 +26,6 @@ public class ArrowCountdownTask extends BukkitRunnable {
             return;
         }
         pluginPlayer.setArrowCountdown(true);
-        player.sendMessage("Arrow cooldown");
 
         if (globalXPCountdown == 10) {
             cancel();

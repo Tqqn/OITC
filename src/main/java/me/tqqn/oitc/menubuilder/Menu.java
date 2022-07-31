@@ -68,9 +68,7 @@ public class Menu {
     public void open(Player player) {
         MenuManager menuManager = MenuManager.getInstance();
 
-        buttonMap.forEach((slot, button) -> {
-            inventory.setItem(slot, button.getItemStack());
-        });
+        buttonMap.forEach((slot, button) -> inventory.setItem(slot, button.getItemStack()));
 
         player.openInventory(inventory);
         menuManager.registerMenu(player.getUniqueId(), this);

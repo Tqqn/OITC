@@ -3,6 +3,7 @@ version: '${project.version}'
 main: me.tqqn.oitc.OITC
 api-version: 1.16
 description: Run, shoot and run, repeat.
+depend: [ProtocolLib]
 commands:
   start:
     description: Start Command

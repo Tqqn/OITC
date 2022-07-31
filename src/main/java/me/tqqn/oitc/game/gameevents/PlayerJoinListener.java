@@ -20,6 +20,8 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
+        event.setJoinMessage("");
+
         Player player = event.getPlayer();
 
         if (gameManager.canJoin(player)) {

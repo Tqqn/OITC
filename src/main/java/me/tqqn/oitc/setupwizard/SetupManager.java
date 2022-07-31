@@ -70,10 +70,10 @@ public class SetupManager {
     }
 
     public void removeSetupItemsFromAllPlayers() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        Bukkit.getOnlinePlayers().forEach(player -> {
             if (!isPlayerInSetupMode(player.getUniqueId())) return;
             removeSetupItems(player);
             Bukkit.getLogger().info(Messages.REMOVE_SETUP_ITEMS_FROM_PLAYER.getMessage(player.getDisplayName()));
-        }
+        });
     }
 }

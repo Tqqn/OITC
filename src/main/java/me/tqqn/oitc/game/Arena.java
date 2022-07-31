@@ -19,7 +19,7 @@ public class Arena {
     @Getter
     private final int maximumPlayers;
     @Getter
-    private final int killsforgametoend;
+    private final int killsForGameToEnd;
     @Getter
     private int currentKills = 0;
     @Getter
@@ -27,13 +27,13 @@ public class Arena {
 
     private final List<Location> spawnLocations;
     @Getter
-    private final Map<UUID, PluginPlayer> playersInArena = new HashMap<>();
+    private Map<UUID, PluginPlayer> playersInArena = new HashMap<>();
 
     public Arena(String displayName, int minimumPlayers, int maximumPlayers, int killsforgametoend, List<Location> spawnLocations) {
         this.displayName = displayName;
         this.minimumPlayers = minimumPlayers;
         this.maximumPlayers = maximumPlayers;
-        this.killsforgametoend = killsforgametoend;
+        this.killsForGameToEnd = killsforgametoend;
         this.spawnLocations = spawnLocations;
     }
 
@@ -48,9 +48,6 @@ public class Arena {
     public void addKillToCurrentKills() {
         this.currentKills = (this.currentKills+1);
     }
-    public boolean isMaxKills() {
-        return currentKills >= killsforgametoend;
-    }
 
     public void calculateGameWinner() {
         PluginPlayer winner = null;
@@ -60,8 +57,9 @@ public class Arena {
                 winner = player;
             }
             if (player.getPlayerStats().getKills() > winner.getPlayerStats().getKills()) {
-                this.winner = player;
+                winner = player;
             }
+            this.winner = winner;
         }
     }
 

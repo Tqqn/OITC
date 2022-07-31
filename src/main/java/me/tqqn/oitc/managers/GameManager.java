@@ -12,13 +12,12 @@ import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.utils.Permissions;
+import me.tqqn.oitc.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class GameManager {
@@ -39,7 +38,7 @@ public class GameManager {
 
     public GameManager(OITC plugin) {
         this.plugin = plugin;
-        this.playerManager = new PlayerManager(this);
+        this.playerManager = new PlayerManager();
         this.scoreboardManager = new ScoreboardManager();
         PluginConfig pluginConfig = plugin.getPluginConfig();
         this.arena = new Arena(pluginConfig.getArenaName(),
@@ -47,7 +46,6 @@ public class GameManager {
                 pluginConfig.getMaximumPlayers(),
                 pluginConfig.getKillsToEndGame(),
                 pluginConfig.getArenaSpawnLocations());
-
         registerEvents();
     }
 
@@ -87,6 +85,7 @@ public class GameManager {
     }
 
     public boolean canJoin(Player player) {
+        if (player.hasPermission(Permissions.JOIN_ARENA_ACTIVE_PERMISSION.getPermission())) return true;
         if (isGameRunning()) return false;
         if (!arena.isArenaFull()) return true;
 
@@ -105,8 +104,8 @@ public class GameManager {
         return plugin.getPluginConfig().getLobbyLocation();
     }
 
-    public boolean isArenaOnMaxKills() {
-        return arena.isMaxKills();
+    public boolean isArenaOnMaxKills(PlayerStats playerStats) {
+        return (playerStats.getKills() >= arena.getKillsForGameToEnd());
     }
 
     public boolean canGameStart() {
@@ -154,25 +153,28 @@ public class GameManager {
         UpdateScoreboardTask updateScoreboardTask = new UpdateScoreboardTask(this);
         updateScoreboardTask.runTaskTimerAsynchronously(plugin, 0, 20);
 
-        for (PluginPlayer pluginPlayer : arena.getPlayersInArena().values()) {
+        arena.getPlayersInArena().values().forEach(pluginPlayer -> {
             Player player = Bukkit.getPlayer(pluginPlayer.getUuid());
             if (player == null) return;
             player.teleport(getRandomArenaSpawnLocation());
             playerManager.givePlayerBowAndArrow(player);
-        }
+        });
+        Bukkit.getOnlinePlayers().forEach(Sounds.GAME_START::playPacketSound);
+        broadcast(Messages.GAME_START.getMessage());
     }
 
     private void endGame() {
             arena.calculateGameWinner();
             broadcast(Messages.WIN_MESSAGE.getMessage(arena.getWinner().getDisplayName()));
+            if (Bukkit.getPlayer(arena.getWinner().getUuid()) != null) {
+                Bukkit.getPlayer(arena.getWinner().getUuid()).sendTitle(Messages.TITLE_PLAYER_WIN.getMessage(), "", 20, 70, 20);
+            }
             this.endGameTask = new EndGameTask(this);
             this.endGameTask.runTaskTimer(plugin, 0, 20);
     }
 
     private void restartGame() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.kickPlayer(Messages.KICK_PLAYER_ON_ENDGAME.getMessage());
-        }
+        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(Messages.KICK_PLAYER_ON_ENDGAME.getMessage()));
         Bukkit.getServer().shutdown();
     }
 
@@ -181,9 +183,11 @@ public class GameManager {
         pluginManager.registerEvents(new PlayerHitListener(this),plugin);
         pluginManager.registerEvents(new PlayerJoinListener(this), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
-        pluginManager.registerEvents(new PlayerShootListener(this), plugin);
+        pluginManager.registerEvents(new ProjectileHitListener(this), plugin);
         pluginManager.registerEvents(new MenuListener(), plugin);
         pluginManager.registerEvents(new CreatureSpawnListener(), plugin);
         pluginManager.registerEvents(new PlayerDamageListener(), plugin);
+        pluginManager.registerEvents(new InventoryClickListener(this), plugin);
+        pluginManager.registerEvents(new ItemDropListener(), plugin);
     }
 }

@@ -9,12 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class PlayerManager {
 
-    private final GameManager gameManager;
     private final ItemStack arrow = new ItemStack(Material.ARROW,1);
-
-    public PlayerManager(GameManager gameManager) {
-        this.gameManager = gameManager;
-    }
 
     public void givePlayerBowAndArrow(Player player) {
         ItemStack bow = new ItemStack(Material.BOW);
@@ -35,11 +30,11 @@ public class PlayerManager {
 
     public void sendDeathTitleToPlayer(Player player) {
         player.resetTitle();
-        player.sendTitle(Messages.DEATH_TITLE.getMessage(),"", 20, 70, 20);
+        player.sendTitle(Messages.TITLE_DEATH_PLAYER.getMessage(),"", 20, 70, 20);
     }
 
     public void sendKillTitleToPlayer(Player player) {
         player.resetTitle();
-        player.sendTitle(Messages.KILL_TITLE.getMessage(),"", 20, 70, 20);
+        player.sendTitle(Messages.TITLE_KILLER_PLAYER.getMessage(),"", 20, 70, 20);
     }
 }

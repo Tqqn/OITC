@@ -1,5 +1,7 @@
 package me.tqqn.oitc;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import lombok.Getter;
 import me.tqqn.oitc.commands.StartCommand;
 import me.tqqn.oitc.config.PluginConfig;
@@ -18,12 +20,23 @@ public final class OITC extends JavaPlugin {
     @Getter
     private PluginConfig pluginConfig;
 
+    private static ProtocolManager protocolManager;
+
+    private String mode = "Unknown";
+
     @Override
     public void onEnable() {
+        protocolManager = ProtocolLibrary.getProtocolManager();
         this.pluginConfig = new PluginConfig(this);
         switch (pluginConfig.getMode()) {
-            case "active" -> this.gameManager = new GameManager(this);
-            case "setup" -> this.setupManager = new SetupManager(this);
+            case "active" -> {
+                this.gameManager = new GameManager(this);
+                this.mode = "Active";
+            }
+            case "setup" -> {
+                this.setupManager = new SetupManager(this);
+                this.mode = "Setup";
+            }
             default -> {
                 Bukkit.getLogger().info(Messages.NO_MODE_SELECTED.getMessage());
                 try {
@@ -57,6 +70,7 @@ public final class OITC extends JavaPlugin {
         Bukkit.getLogger().info(Color.translateColor("&6Author: &fTqqn"));
         Bukkit.getLogger().info(Color.translateColor("&6Version: &f" + getDescription().getVersion()));
         Bukkit.getLogger().info(Color.translateColor("&6Description: &f" + getDescription().getDescription()));
+        Bukkit.getLogger().info(Color.translateColor("&6Mode: &f" + this.mode));
         Bukkit.getLogger().info(Color.translateColor("&6&m---------------------------------"));
         Bukkit.getLogger().info(Color.translateColor(""));
     }
@@ -67,7 +81,12 @@ public final class OITC extends JavaPlugin {
         Bukkit.getLogger().info(Color.translateColor("&6Author: &fTqqn"));
         Bukkit.getLogger().info(Color.translateColor("&6Version: &f" + getDescription().getVersion()));
         Bukkit.getLogger().info(Color.translateColor("&6Description: &f" + getDescription().getDescription()));
+        Bukkit.getLogger().info(Color.translateColor("&6Mode: &f" + this.mode));
         Bukkit.getLogger().info(Color.translateColor("&6&m---------------------------------"));
         Bukkit.getLogger().info(Color.translateColor(""));
+    }
+
+    public static ProtocolManager getProtocolManager() {
+        return protocolManager;
     }
 }
