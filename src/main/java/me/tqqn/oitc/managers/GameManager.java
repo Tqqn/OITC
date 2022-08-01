@@ -45,7 +45,8 @@ public class GameManager {
                 pluginConfig.getMinimumPlayers(),
                 pluginConfig.getMaximumPlayers(),
                 pluginConfig.getKillsToEndGame(),
-                pluginConfig.getArenaSpawnLocations());
+                pluginConfig.getArenaSpawnLocations(),
+                pluginConfig.getPowerUpLocations());
         registerEvents();
     }
 
@@ -99,6 +100,7 @@ public class GameManager {
     public Location getRandomArenaSpawnLocation() {
         return arena.getRandomSpawnLocation();
     }
+    public Location getRandomPowerUpLocation() { return arena.getRandomPowerUpLocation(); }
 
     public Location getLobbyLocation() {
         return plugin.getPluginConfig().getLobbyLocation();
@@ -118,6 +120,14 @@ public class GameManager {
 
     public PluginPlayer getPlayerInArena(UUID uuid) {
         return arena.getPlayerInArena(uuid);
+    }
+
+    public boolean isPowerUpSpawnedInArena() {
+        return arena.isPowerUpSpawned();
+    }
+
+    public void setArenaPowerUpSpawned(boolean isPowerUpSpawned) {
+        arena.setPowerUpSpawned(isPowerUpSpawned);
     }
 
     public void addKillToArenaKills() {

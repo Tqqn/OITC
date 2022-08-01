@@ -1,5 +1,6 @@
 package me.tqqn.oitc.items;
 
+import me.tqqn.oitc.utils.Color;
 import me.tqqn.oitc.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,7 @@ public enum PluginItems {
     PLAYER_BOW("&cOITC Bow", Material.BOW, null, false, 1),
     SET_LOBBY_LOCATION_ITEM("&cSet Lobby Location", Material.BOOK, new String[]{"&6Sets Lobby Spawn location"}, true, 1),
     SAVE_ITEM("&cSave", Material.NETHER_STAR, new String[]{"&6Saves locations."}, true, 1),
+    POWERUP_SPEED_ITEM("&cSpeed-PowerUp", Material.FEATHER, null, true, 1),
     SET_ARENA_LOCATION_ITEM("&cSet Arena Locations", Material.FEATHER, new String[]{"&6Sets Arena Spawn locations"}, true, 1);
 
     private final String displayName;
@@ -27,8 +29,8 @@ public enum PluginItems {
     }
     public ItemStack getItemStack() {
         ItemBuilder itemBuilder = new ItemBuilder(this.material, amount);
-        itemBuilder.setDisplayName(this.displayName);
-        itemBuilder.setLore(this.lore);
+        itemBuilder.setDisplayName(Color.translateColor(this.displayName));
+        itemBuilder.setLore(Color.translateColor(this.lore));
         if (this.itemGlow) {
             itemBuilder.setGlow();
         }

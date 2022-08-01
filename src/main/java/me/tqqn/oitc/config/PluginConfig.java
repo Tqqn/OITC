@@ -57,7 +57,15 @@ public class PluginConfig {
         return spawnlocs;
     }
 
-    public Location getArenaSpawnLocation(String key) {
+    public List<Location> getPowerUpLocations() {
+        List<Location> powerUpLocs = new ArrayList<>();
+        for (String locationkey : plugin.getConfig().getConfigurationSection("arena.powerup-locations").getKeys(false)) {
+            powerUpLocs.add(getPowerUpLocation(locationkey));
+        }
+        return powerUpLocs;
+    }
+
+    private Location getArenaSpawnLocation(String key) {
         return new Location(
                 Bukkit.getWorld(plugin.getConfig().getString("arena.world")),
                 plugin.getConfig().getDouble("arena.spawn-locations." + key + ".x"),
@@ -65,6 +73,16 @@ public class PluginConfig {
                 plugin.getConfig().getDouble("arena.spawn-locations." + key + ".z"),
                 (float) plugin.getConfig().getDouble("arena.spawn-locations." + key + ".pitch"),
                 (float) plugin.getConfig().getDouble("arena.spawn-locations." + key + ".yaw"));
+    }
+
+    private Location getPowerUpLocation(String key) {
+        return new Location(
+                Bukkit.getWorld(plugin.getConfig().getString("arena.world")),
+                plugin.getConfig().getDouble("arena.powerup-locations." + key + ".x"),
+                plugin.getConfig().getDouble("arena.powerup-locations." + key + ".y"),
+                plugin.getConfig().getDouble("arena.powerup-locations." + key + ".z"),
+                (float) plugin.getConfig().getDouble("arena.powerup-locations." + key + ".pitch"),
+                (float) plugin.getConfig().getDouble("arena.powerup-locations." + key + ".yaw"));
     }
 
     public Location getLobbyLocation() {

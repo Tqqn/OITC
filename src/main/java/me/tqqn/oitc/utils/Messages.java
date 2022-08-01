@@ -29,6 +29,8 @@ public enum Messages {
     TITLE_KILLER_PLAYER(Color.translateColor("&a&l+1 Kill"), "","",""),
     TITLE_DEATH_PLAYER(Color.translateColor("&c&l+1 Death"), "","",""),
     TITLE_PLAYER_WIN(Color.translateColor("&aYou won!"),"","",""),
+    POWERUP_SPEED_PICKUP(Color.translateColor("&cYou picked up the speed powerup. You received 6 seconds of Speed II"), "", "", ""),
+    POWERUP_SPAWN(Color.translateColor("&cPowerup has been spawned!"), "", "", ""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
 
 

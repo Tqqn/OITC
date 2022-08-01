@@ -33,4 +33,11 @@ arena:
       z:
       pitch:
       yaw:
+  powerup-locations:
+    1:
+      x:
+      y:
+      z:
+      pitch:
+      yaw:
 game-duration: 30

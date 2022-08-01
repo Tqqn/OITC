@@ -25,16 +25,20 @@ public class Arena {
     @Getter
     private PluginPlayer winner = null;
 
+    private boolean isPowerUpSpawned;
+
     private final List<Location> spawnLocations;
+    private final List<Location> powerUpLocations;
     @Getter
     private Map<UUID, PluginPlayer> playersInArena = new HashMap<>();
 
-    public Arena(String displayName, int minimumPlayers, int maximumPlayers, int killsforgametoend, List<Location> spawnLocations) {
+    public Arena(String displayName, int minimumPlayers, int maximumPlayers, int killsforgametoend, List<Location> spawnLocations, List<Location> powerUpLocations) {
         this.displayName = displayName;
         this.minimumPlayers = minimumPlayers;
         this.maximumPlayers = maximumPlayers;
         this.killsForGameToEnd = killsforgametoend;
         this.spawnLocations = spawnLocations;
+        this.powerUpLocations = powerUpLocations;
     }
 
     public void addPlayerToArena(PluginPlayer player) {
@@ -42,9 +46,22 @@ public class Arena {
         playersInArena.put(player.getUuid(), player);
     }
 
+    public boolean isPowerUpSpawned() {
+        return this.isPowerUpSpawned;
+    }
+
+    public void setPowerUpSpawned(boolean isPowerUpSpawned) {
+        this.isPowerUpSpawned = isPowerUpSpawned;
+    }
+
     public Location getRandomSpawnLocation() {
         return spawnLocations.get(ThreadLocalRandom.current().nextInt(spawnLocations.size()));
     }
+
+    public Location getRandomPowerUpLocation() {
+        return powerUpLocations.get(ThreadLocalRandom.current().nextInt(powerUpLocations.size()));
+    }
+
     public void addKillToCurrentKills() {
         this.currentKills = (this.currentKills+1);
     }
