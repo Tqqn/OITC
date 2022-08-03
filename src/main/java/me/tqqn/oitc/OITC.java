@@ -39,11 +39,7 @@ public final class OITC extends JavaPlugin {
             }
             default -> {
                 Bukkit.getLogger().info(Messages.NO_MODE_SELECTED.getMessage());
-                try {
-                    getServer().getPluginManager().disablePlugin(this);
-                } catch (IllegalStateException exception) {
-                    Bukkit.getLogger().info("disabled.");
-                }
+                    this.setEnabled(false);
             }
 
         }

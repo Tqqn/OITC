@@ -10,6 +10,7 @@ public enum PluginItems {
     PLAYER_ARROW("&cOITC Arrow", Material.ARROW, null, false, 1),
     PLAYER_BOW("&cOITC Bow", Material.BOW, null, false, 1),
     SET_LOBBY_LOCATION_ITEM("&cSet Lobby Location", Material.BOOK, new String[]{"&6Sets Lobby Spawn location"}, true, 1),
+    SET_POWERUP_LOCATIONS_ITEM("&cSet PowerUp Location", Material.FEATHER, new String[]{"&6Sets PowerUp locations."}, true, 1),
     SAVE_ITEM("&cSave", Material.NETHER_STAR, new String[]{"&6Saves locations."}, true, 1),
     POWERUP_SPEED_ITEM("&cSpeed-PowerUp", Material.FEATHER, null, true, 1),
     SET_ARENA_LOCATION_ITEM("&cSet Arena Locations", Material.FEATHER, new String[]{"&6Sets Arena Spawn locations"}, true, 1);
@@ -29,8 +30,10 @@ public enum PluginItems {
     }
     public ItemStack getItemStack() {
         ItemBuilder itemBuilder = new ItemBuilder(this.material, amount);
-        itemBuilder.setDisplayName(Color.translateColor(this.displayName));
-        itemBuilder.setLore(Color.translateColor(this.lore));
+        itemBuilder.setDisplayName(this.displayName);
+        if (this.lore != null) {
+            itemBuilder.setLore(this.lore);
+        }
         if (this.itemGlow) {
             itemBuilder.setGlow();
         }

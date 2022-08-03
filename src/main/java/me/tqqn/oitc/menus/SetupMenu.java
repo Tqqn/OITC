@@ -16,5 +16,4 @@ public class SetupMenu extends Menu {
 
         registerButton(new MenuButton(new ItemStack(Material.DIAMOND_PICKAXE)).setWhenClicked(clicked -> clicked.sendMessage("")), 0);
     }
-
 }

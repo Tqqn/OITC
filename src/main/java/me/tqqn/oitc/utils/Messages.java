@@ -23,6 +23,7 @@ public enum Messages {
     SAVE_SETUP_MODE(Color.translateColor("&cYou saved the selected locations."),"", "", ""),
     SELECT_LOBBY_LOCATION_SETUP_MODE(Color.translateColor("&cSelected lobby location."), "", "", ""),
     SELECT_ARENA_LOCATION_SETUP_MODE(Color.translateColor("&cSelected arena location."), "", "", ""),
+    SELECT_POWERUP_LOCATION_SETUP_MODE(Color.translateColor("&cSelected powerup location."), "", "", ""),
     NO_LOBBY_LOCATION_SETUP_MODE(Color.translateColor("&cLobby location is null. Please select a location."),"", "", ""),
     REMOVE_SETUP_ITEMS_FROM_PLAYER(Color.translateColor("&cRemoved setup items from &f&l%%PLAYER%%"), "%%PLAYER%%","",""),
     NO_MODE_SELECTED(Color.translateColor("&cNo selected mode found in config."), "","",""),

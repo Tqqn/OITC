@@ -6,12 +6,14 @@ import me.tqqn.oitc.utils.Messages;
 import me.tqqn.oitc.managers.GameManager;
 import me.tqqn.oitc.utils.Sounds;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.potion.PotionEffectType;
 
 public class PlayerHitListener implements Listener {
 
@@ -56,7 +58,9 @@ public class PlayerHitListener implements Listener {
         gameManager.getPlayerManager().sendKillTitleToPlayer(shooter);
 
         player.getInventory().clear();
-        player.teleport(gameManager.getRandomArenaSpawnLocation());
+        Location location = gameManager.getRandomPowerUpLocation();
+        player.teleport(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
+        player.removePotionEffect(PotionEffectType.SPEED);
 
         gameManager.broadcast(Messages.GLOBAL_PLAYER_KILL_MESSAGE.getMessage(player.getDisplayName(), shooter.getDisplayName()));
 

@@ -41,13 +41,13 @@ public class PluginConfig {
         return plugin.getConfig().getString("arena.name");
     }
     public int getMinimumPlayers() {
-        return plugin.getConfig().getInt("arena.minimumPlayers");
+        return Integer.parseInt(plugin.getConfig().getString("arena.minimumPlayers"));
     }
     public int getMaximumPlayers() {
-        return plugin.getConfig().getInt("arena.maximumPlayers");
+        return Integer.parseInt(plugin.getConfig().getString("arena.maximumPlayers"));
     }
     public int getKillsToEndGame() {
-        return plugin.getConfig().getInt("arena.killsToEndGame");
+        return Integer.parseInt(plugin.getConfig().getString("arena.killsToEndGame"));
     }
     public List<Location> getArenaSpawnLocations() {
         List<Location> spawnlocs = new ArrayList<>();
@@ -104,6 +104,20 @@ public class PluginConfig {
             plugin.getConfig().set("arena.spawn-locations." + i + ".z", location.getZ());
             plugin.getConfig().set("arena.spawn-locations." + i + ".pitch", location.getPitch());
             plugin.getConfig().set("arena.spawn-locations." + i + ".yaw", location.getYaw());
+            i++;
+            plugin.saveConfig();
+        }
+    }
+
+    public void savePowerUpLocations(List<Location> powerUpLocations) {
+        int i = 0;
+        plugin.getConfig().set("arena.world", powerUpLocations.get(0).getWorld().getName());
+        for (Location location : powerUpLocations) {
+            plugin.getConfig().set("arena.powerup-locations." + i + ".x", location.getX());
+            plugin.getConfig().set("arena.powerup-locations." + i + ".y", location.getY());
+            plugin.getConfig().set("arena.powerup-locations." + i + ".z", location.getZ());
+            plugin.getConfig().set("arena.powerup-locations." + i + ".pitch", location.getPitch());
+            plugin.getConfig().set("arena.powerup-locations." + i + ".yaw", location.getYaw());
             i++;
             plugin.saveConfig();
         }

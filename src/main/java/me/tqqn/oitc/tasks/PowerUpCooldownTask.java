@@ -12,6 +12,8 @@ public class PowerUpCooldownTask extends BukkitRunnable {
     private final GameManager gameManager;
     private final OITC plugin;
 
+    private int countdown = 0;
+
     public PowerUpCooldownTask(GameManager gameManager, OITC plugin) {
         this.gameManager = gameManager;
         this.plugin = plugin;
@@ -23,12 +25,18 @@ public class PowerUpCooldownTask extends BukkitRunnable {
             cancel();
             return;
         }
+        countdown++;
+
+        if (countdown >= 30 && (!gameManager.isPowerUpSpawnedInArena())) {
+            countdown = 0;
             Location powerUpLocation = gameManager.getRandomPowerUpLocation();
             SpeedPowerUp speedPowerUp = new SpeedPowerUp(powerUpLocation);
             speedPowerUp.setPowerUp();
+            gameManager.setArenaPowerUpSpawned(true);
             gameManager.broadcast(Messages.POWERUP_SPAWN.getMessage());
 
             ActiveSpeedPowerUpTask activeSpeedPowerUpTask = new ActiveSpeedPowerUpTask(speedPowerUp, gameManager);
-            activeSpeedPowerUpTask.runTaskTimerAsynchronously(plugin, 0, 20);
+            activeSpeedPowerUpTask.runTaskTimer(plugin, 0, 5);
+        }
     }
 }

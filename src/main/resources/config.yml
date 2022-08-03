@@ -1,5 +1,5 @@
 #Plugin-mode game or setup
-plugin-mode: ''
+plugin-mode: 'setup'
 #Database credentials:
 database:
   name: ''

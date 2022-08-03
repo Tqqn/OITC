@@ -1,5 +1,7 @@
 package me.tqqn.oitc.powerups;
 
+import me.tqqn.oitc.packets.PowerUpPacket;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -14,8 +16,9 @@ public abstract class PowerUp {
     private final String displayName;
     private final Location location;
     private boolean isSpawned;
-
     private Item item;
+
+    private final PowerUpPacket powerUpPacket;
 
     private Player nearestPlayer;
 
@@ -23,6 +26,8 @@ public abstract class PowerUp {
         this.displayItem = displayItem;
         this.displayName = displayName;
         this.location = location;
+        this.item = location.getWorld().dropItem(location, displayItem);
+        this.powerUpPacket = new PowerUpPacket(item, location, displayName);
     }
 
     public ItemStack getDisplayItem() {
@@ -34,18 +39,19 @@ public abstract class PowerUp {
     }
 
     public void setPowerUp() {
-        this.item = location.getWorld().dropItem(location, displayItem);
-        item.setGravity(false);
         item.setCanMobPickup(false);
         item.setCanPlayerPickup(false);
         item.setGlowing(true);
         item.setInvulnerable(true);
+
         this.isSpawned = true;
+            powerUpPacket.sendPowerUpPacket();
     }
 
     private void remove() {
-        item.remove();
         this.isSpawned = false;
+
+            powerUpPacket.sendRemovePowerUpPacket();
     }
 
     public boolean isPowerUpSpawned() {

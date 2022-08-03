@@ -11,12 +11,12 @@ import org.bukkit.potion.PotionEffectType;
 public class SpeedPowerUp extends PowerUp {
 
     public SpeedPowerUp(Location location) {
-        super(PluginItems.POWERUP_SPEED_ITEM.getItemStack(), "&cSpeed Power-Up", location);
+        super(PluginItems.POWERUP_SPEED_ITEM.getItemStack(), "&b&lSpeed Power-Up", location);
     }
 
     @Override
     public void givePowerUp(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 6, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 120, 2));
         player.sendMessage(Messages.POWERUP_SPEED_PICKUP.getMessage());
     }
 }

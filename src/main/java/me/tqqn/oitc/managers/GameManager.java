@@ -33,6 +33,7 @@ public class GameManager {
     private final Arena arena;
 
     private ActiveGameTask activeGameTask;
+    private PowerUpCooldownTask powerUpCooldownTask;
     private CountdownTask countdownTask;
     private EndGameTask endGameTask;
 
@@ -63,6 +64,7 @@ public class GameManager {
             }
             case END -> {
                 if (this.activeGameTask != null) this.activeGameTask.cancel();
+                if (this.powerUpCooldownTask != null) this.powerUpCooldownTask.cancel();
                 endGame();
             }
             case RESTARTING -> {
@@ -100,7 +102,10 @@ public class GameManager {
     public Location getRandomArenaSpawnLocation() {
         return arena.getRandomSpawnLocation();
     }
-    public Location getRandomPowerUpLocation() { return arena.getRandomPowerUpLocation(); }
+
+    public Location getRandomPowerUpLocation() {
+        return arena.getRandomPowerUpLocation();
+    }
 
     public Location getLobbyLocation() {
         return plugin.getPluginConfig().getLobbyLocation();
@@ -157,7 +162,7 @@ public class GameManager {
     }
 
     private void startGame() {
-        this.activeGameTask = new ActiveGameTask(plugin,this);
+        this.activeGameTask = new ActiveGameTask(plugin, this);
         this.activeGameTask.runTaskTimer(plugin, 0, 20);
 
         UpdateScoreboardTask updateScoreboardTask = new UpdateScoreboardTask(this);
@@ -166,21 +171,28 @@ public class GameManager {
         arena.getPlayersInArena().values().forEach(pluginPlayer -> {
             Player player = Bukkit.getPlayer(pluginPlayer.getUuid());
             if (player == null) return;
-            player.teleport(getRandomArenaSpawnLocation());
+
+            Location location = getRandomArenaSpawnLocation();
+
+            player.teleport(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
             playerManager.givePlayerBowAndArrow(player);
         });
+
+        this.powerUpCooldownTask = new PowerUpCooldownTask(this, plugin);
+        powerUpCooldownTask.runTaskTimer(plugin, 0, 20);
+
         Bukkit.getOnlinePlayers().forEach(Sounds.GAME_START::playPacketSound);
         broadcast(Messages.GAME_START.getMessage());
     }
 
     private void endGame() {
-            arena.calculateGameWinner();
-            broadcast(Messages.WIN_MESSAGE.getMessage(arena.getWinner().getDisplayName()));
-            if (Bukkit.getPlayer(arena.getWinner().getUuid()) != null) {
-                Bukkit.getPlayer(arena.getWinner().getUuid()).sendTitle(Messages.TITLE_PLAYER_WIN.getMessage(), "", 20, 70, 20);
-            }
-            this.endGameTask = new EndGameTask(this);
-            this.endGameTask.runTaskTimer(plugin, 0, 20);
+        arena.calculateGameWinner();
+        broadcast(Messages.WIN_MESSAGE.getMessage(arena.getWinner().getDisplayName()));
+        if (Bukkit.getPlayer(arena.getWinner().getUuid()) != null) {
+            Bukkit.getPlayer(arena.getWinner().getUuid()).sendTitle(Messages.TITLE_PLAYER_WIN.getMessage(), "", 20, 70, 20);
+        }
+        this.endGameTask = new EndGameTask(this);
+        this.endGameTask.runTaskTimer(plugin, 0, 20);
     }
 
     private void restartGame() {
@@ -190,7 +202,7 @@ public class GameManager {
 
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
-        pluginManager.registerEvents(new PlayerHitListener(this),plugin);
+        pluginManager.registerEvents(new PlayerHitListener(this), plugin);
         pluginManager.registerEvents(new PlayerJoinListener(this), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
         pluginManager.registerEvents(new ProjectileHitListener(this), plugin);
@@ -199,5 +211,6 @@ public class GameManager {
         pluginManager.registerEvents(new PlayerDamageListener(), plugin);
         pluginManager.registerEvents(new InventoryClickListener(this), plugin);
         pluginManager.registerEvents(new ItemDropListener(), plugin);
+        pluginManager.registerEvents(new HungerChangeListener(), plugin);
     }
 }

@@ -5,9 +5,7 @@ import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.config.PluginConfig;
 import me.tqqn.oitc.items.PluginItems;
 import me.tqqn.oitc.setupwizard.commands.EnterSetupModeCommand;
-import me.tqqn.oitc.setupwizard.events.PlayerInteractListener;
-import me.tqqn.oitc.setupwizard.events.PlayerJoinListener;
-import me.tqqn.oitc.setupwizard.events.PlayerQuitListener;
+import me.tqqn.oitc.setupwizard.events.*;
 import me.tqqn.oitc.utils.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,7 +36,8 @@ public class SetupManager {
         player.getInventory().clear();
         player.getInventory().setItem(0, PluginItems.SET_LOBBY_LOCATION_ITEM.getItemStack());
         player.getInventory().setItem(1, PluginItems.SET_ARENA_LOCATION_ITEM.getItemStack());
-        player.getInventory().setItem(2, PluginItems.SAVE_ITEM.getItemStack());
+        player.getInventory().setItem(2, PluginItems.SET_POWERUP_LOCATIONS_ITEM.getItemStack());
+        player.getInventory().setItem(3, PluginItems.SAVE_ITEM.getItemStack());
 
         player.sendMessage(Messages.ENTER_SETUP_MODE.getMessage());
     }
@@ -63,6 +62,8 @@ public class SetupManager {
         pluginManager.registerEvents(new PlayerInteractListener(this),plugin);
         pluginManager.registerEvents(new PlayerJoinListener(), plugin);
         pluginManager.registerEvents(new PlayerQuitListener(this), plugin);
+        pluginManager.registerEvents(new InventoryClickListener(), plugin);
+        pluginManager.registerEvents(new ItemDropListener(), plugin);
     }
 
     private void registerCommands() {
