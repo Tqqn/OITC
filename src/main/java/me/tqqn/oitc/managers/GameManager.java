@@ -212,5 +212,6 @@ public class GameManager {
         pluginManager.registerEvents(new InventoryClickListener(this), plugin);
         pluginManager.registerEvents(new ItemDropListener(), plugin);
         pluginManager.registerEvents(new HungerChangeListener(), plugin);
+        pluginManager.registerEvents(new WeatherChangeListener(), plugin);
     }
 }
