@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public abstract class PowerUp {
 
@@ -16,18 +19,27 @@ public abstract class PowerUp {
     private final String displayName;
     private final Location location;
     private boolean isSpawned;
-    private Item item;
+    private final Item item;
 
-    private final PowerUpPacket powerUpPacket;
-
-    private Player nearestPlayer;
+    private Map<UUID, PowerUpPacket> loadedPacketEntities = new HashMap<>();
 
     public PowerUp(ItemStack displayItem, String displayName, Location location) {
         this.displayItem = displayItem;
         this.displayName = displayName;
         this.location = location;
         this.item = location.getWorld().dropItem(location, displayItem);
-        this.powerUpPacket = new PowerUpPacket(item, location, displayName);
+    }
+
+    public void addSpawnedEntityToMap(Player player, PowerUpPacket powerUpPacket) {
+        loadedPacketEntities.put(player.getUniqueId(), powerUpPacket);
+    }
+
+    public void removeSpawnedEntityFromMap(Player player) {
+        loadedPacketEntities.remove(player.getUniqueId());
+    }
+
+    public boolean doesExistInSpawnEntityMap(Player player) {
+        return loadedPacketEntities.containsKey(player.getUniqueId());
     }
 
     public ItemStack getDisplayItem() {
@@ -45,13 +57,19 @@ public abstract class PowerUp {
         item.setInvulnerable(true);
 
         this.isSpawned = true;
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            PowerUpPacket powerUpPacket = new PowerUpPacket(player, item, location, displayName, this);
             powerUpPacket.sendPowerUpPacket();
+        });
     }
 
     private void remove() {
         this.isSpawned = false;
-
+        Bukkit.getOnlinePlayers().stream().filter(this::doesExistInSpawnEntityMap).forEach(player -> {
+            PowerUpPacket powerUpPacket = loadedPacketEntities.get(player.getUniqueId());
             powerUpPacket.sendRemovePowerUpPacket();
+        });
     }
 
     public boolean isPowerUpSpawned() {
@@ -77,8 +95,6 @@ public abstract class PowerUp {
             if (location.distance(player.getLocation()) > location.distance(nearestPlayer.getLocation())) {
                 nearestPlayer = player;
             }
-
-            this.nearestPlayer = nearestPlayer;
 
             givePowerUp(nearestPlayer);
             remove();

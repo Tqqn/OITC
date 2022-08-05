@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import me.tqqn.oitc.OITC;
+import me.tqqn.oitc.powerups.PowerUp;
 import me.tqqn.oitc.utils.Color;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,12 +25,17 @@ public class PowerUpPacket {
     private final Location location;
     private final String displayName;
 
+    private final Player player;
+
     private final ArmorStand itemArmorStand;
     private final ArmorStand nameArmorStand;
 
     private final ProtocolManager protocolManager = OITC.getProtocolManager();
+    private final PowerUp powerUp;
 
-    public PowerUpPacket(Item item, Location location, String displayName) {
+    public PowerUpPacket(Player player, Item item, Location location, String displayName, PowerUp powerUp) {
+        this.player = player;
+        this.powerUp = powerUp;
         this.item = item;
         this.location = location;
         this.displayName = displayName;
@@ -38,7 +44,8 @@ public class PowerUpPacket {
     }
 
     public void sendPowerUpPacket() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+
+        powerUp.addSpawnedEntityToMap(player, this);
             try {
                 protocolManager.sendServerPacket(player, spawnItemArmorStandPacket());
                 protocolManager.sendServerPacket(player, spawnItemArmorStandMetaPacket());
@@ -51,7 +58,6 @@ public class PowerUpPacket {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     public void sendRemovePowerUpPacket() {
@@ -59,13 +65,12 @@ public class PowerUpPacket {
         int[] ints = new int[]{itemID, itemArmorStandID, nameArmorStandID};
         packetContainer.getIntegerArrays().write(0, ints);
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        powerUp.removeSpawnedEntityFromMap(player);
             try {
                 protocolManager.sendServerPacket(player, packetContainer);
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     private PacketContainer spawnNameArmorStandPacket() {
