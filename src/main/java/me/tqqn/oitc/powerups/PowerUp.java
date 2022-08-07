@@ -64,7 +64,7 @@ public abstract class PowerUp {
         });
     }
 
-    private void remove() {
+    public void removePowerUp() {
         this.isSpawned = false;
         Bukkit.getOnlinePlayers().stream().filter(this::doesExistInSpawnEntityMap).forEach(player -> {
             PowerUpPacket powerUpPacket = loadedPacketEntities.get(player.getUniqueId());
@@ -97,7 +97,7 @@ public abstract class PowerUp {
             }
 
             givePowerUp(nearestPlayer);
-            remove();
+            removePowerUp();
         }
     }
 

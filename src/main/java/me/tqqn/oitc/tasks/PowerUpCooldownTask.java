@@ -4,8 +4,11 @@ import me.tqqn.oitc.OITC;
 import me.tqqn.oitc.managers.GameManager;
 import me.tqqn.oitc.powerups.powerups.SpeedPowerUp;
 import me.tqqn.oitc.utils.Messages;
-import org.bukkit.Location;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Set;
 
 public class PowerUpCooldownTask extends BukkitRunnable {
 
@@ -25,7 +28,10 @@ public class PowerUpCooldownTask extends BukkitRunnable {
             cancel();
             return;
         }
-        countdown++;
+
+        if (!gameManager.isPowerUpSpawnedInArena()) {
+            countdown++;
+        }
 
         if (countdown >= 30 && (!gameManager.isPowerUpSpawnedInArena())) {
             countdown = 0;

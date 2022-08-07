@@ -5,6 +5,8 @@ import me.tqqn.oitc.powerups.PowerUp;
 import me.tqqn.oitc.powerups.powerups.SpeedPowerUp;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
+
 public class ActiveSpeedPowerUpTask extends BukkitRunnable {
 
     private final SpeedPowerUp speedPowerUp;
@@ -17,6 +19,12 @@ public class ActiveSpeedPowerUpTask extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        if(!gameManager.isGameActive()) {
+            cancel();
+            speedPowerUp.removePowerUp();
+        }
+
         if (!speedPowerUp.isPowerUpSpawned()) {
             gameManager.setArenaPowerUpSpawned(false);
             cancel();

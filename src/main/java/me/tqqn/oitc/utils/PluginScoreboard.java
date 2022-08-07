@@ -61,7 +61,6 @@ public class PluginScoreboard {
         entityKills.setPrefix(Color.translateColor("&7Deaths: "));
         entityKills.setSuffix(Color.translateColor("&f" + playerStats.getDeaths()));
 
-        blank.setScore(1);
         objective.getScore(ChatColor.AQUA.toString()).setScore(2); //deaths
         objective.getScore(ChatColor.BLUE.toString()).setScore(3); //entity_kills
         objective.getScore(ChatColor.BLACK.toString()).setScore(4); //player_kills
