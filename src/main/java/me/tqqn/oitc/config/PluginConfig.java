@@ -49,6 +49,12 @@ public class PluginConfig {
     public int getKillsToEndGame() {
         return Integer.parseInt(plugin.getConfig().getString("arena.killsToEndGame"));
     }
+
+    /**
+     * Gets all arena spawnLocations from the config.
+     * Returns a list with all arena spawnLocations.
+     * @return List<Location>
+     */
     public List<Location> getArenaSpawnLocations() {
         List<Location> spawnlocs = new ArrayList<>();
         for (String locationkey : plugin.getConfig().getConfigurationSection("arena.spawn-locations.").getKeys(false)) {
@@ -57,6 +63,11 @@ public class PluginConfig {
         return spawnlocs;
     }
 
+    /**
+     * Gets all powerUp spawnLocations from the config.
+     * Returns a list with all powerUp spawnLocations.
+     * @return List<Location>
+     */
     public List<Location> getPowerUpLocations() {
         List<Location> powerUpLocs = new ArrayList<>();
         for (String locationkey : plugin.getConfig().getConfigurationSection("arena.powerup-locations").getKeys(false)) {
@@ -85,6 +96,7 @@ public class PluginConfig {
                 (float) plugin.getConfig().getDouble("arena.powerup-locations." + key + ".yaw"));
     }
 
+    //Gets the lobby spawn location from config.
     public Location getLobbyLocation() {
         return new Location(
                 Bukkit.getWorld(plugin.getConfig().getString("lobby.world")),
@@ -95,6 +107,7 @@ public class PluginConfig {
                 (float) plugin.getConfig().getDouble("lobby.yaw"));
     }
 
+    //Saves the List<Location> to the config.
     public void saveArenaLocations(List<Location> spawnLocations) {
         int i = 0;
         plugin.getConfig().set("arena.world", spawnLocations.get(0).getWorld().getName());
@@ -108,7 +121,7 @@ public class PluginConfig {
             plugin.saveConfig();
         }
     }
-
+    //Saves the List<Location> to the config.
     public void savePowerUpLocations(List<Location> powerUpLocations) {
         int i = 0;
         plugin.getConfig().set("arena.world", powerUpLocations.get(0).getWorld().getName());
@@ -122,7 +135,7 @@ public class PluginConfig {
             plugin.saveConfig();
         }
     }
-
+    //Saves the Location to the config.
     public void saveLobbyLocation(Location location) {
         plugin.getConfig().set("lobby.world", location.getWorld().getName());
         plugin.getConfig().set("lobby.x", location.getX());

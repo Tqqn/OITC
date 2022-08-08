@@ -7,6 +7,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class PlayerDamageListener implements Listener {
 
+
+    //Default listener to block players from taking damage.
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;

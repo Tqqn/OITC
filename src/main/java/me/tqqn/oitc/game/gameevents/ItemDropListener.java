@@ -6,6 +6,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class ItemDropListener implements Listener {
 
+
+    //Default listener to block players from dropping items.
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
         event.setCancelled(true);

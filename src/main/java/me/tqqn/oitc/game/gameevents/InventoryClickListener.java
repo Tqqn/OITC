@@ -14,6 +14,7 @@ public class InventoryClickListener implements Listener {
         this.gameManager = gameManager;
     }
 
+    //Default listener to block Inventory clicking, but only when the game is active.
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!gameManager.isGameActive()) return;

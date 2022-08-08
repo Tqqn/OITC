@@ -17,8 +17,10 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
 
+        //Removes default Quit message.
         event.setQuitMessage("");
 
+        //Broadcasts custom Quit message and removes player from loaded Scoreboards.
         gameManager.broadcast(Messages.PLAYER_LEAVE.getMessage(event.getPlayer().getDisplayName()));
         gameManager.getScoreboardManager().removePlayerScoreboard(event.getPlayer());
     }

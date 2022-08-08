@@ -20,20 +20,27 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
+        //Replaces the default joinMessage to empty.
         event.setJoinMessage("");
 
         Player player = event.getPlayer();
 
+        //Check if player can join. If not kick player.
         if (gameManager.canJoin(player)) {
+
+            //Clear joined players inventory, add player to the arena.
             player.getInventory().clear();
             gameManager.addNewPlayerToArena(player);
 
+            //Teleport joined player to the lobby.
             player.teleport(gameManager.getLobbyLocation());
 
             int onlinePlayers = Bukkit.getOnlinePlayers().size();
 
+            //Broadcast the new joinMessage.
             gameManager.broadcast(Messages.PLAYER_JOIN.getMessage(String.valueOf(onlinePlayers), String.valueOf(gameManager.getArenaMaxPlayers()), player.getDisplayName()));
 
+            //Check if the game can start.
             if (!gameManager.canGameStart()) return;
             gameManager.setGameState(GameState.STARTING);
 

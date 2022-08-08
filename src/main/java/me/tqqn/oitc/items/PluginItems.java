@@ -28,6 +28,7 @@ public enum PluginItems {
         this.itemGlow = itemGlow;
         this.amount = amount;
     }
+
     public ItemStack getItemStack() {
         ItemBuilder itemBuilder = new ItemBuilder(this.material, amount);
         itemBuilder.setDisplayName(this.displayName);

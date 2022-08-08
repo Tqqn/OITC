@@ -17,6 +17,8 @@ public class StartCommand implements CommandExecutor {
         this.gameManager = plugin.getGameManager();
     }
 
+    //Debug start command.
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         gameManager.setGameState(GameState.STARTING);

@@ -37,6 +37,10 @@ public class GameManager {
     private CountdownTask countdownTask;
     private EndGameTask endGameTask;
 
+    /**
+     * GameManager that manages the game functions.
+     * @param plugin Main class instance.
+     */
     public GameManager(OITC plugin) {
         this.plugin = plugin;
         this.playerManager = new PlayerManager();
@@ -51,11 +55,18 @@ public class GameManager {
         registerEvents();
     }
 
+    /**
+     * Sets the state that is given.
+     * @param gameState GameState enum.
+     */
     public void setGameState(GameState gameState) {
+        //Checks if the new gameState is the same as the old gameState.
         if (this.gameState == gameState) return;
+        //Checks if the current gameState is active and the new gameState is not lobby or starting.
         if (this.gameState == GameState.ACTIVE && gameState == GameState.LOBBY) return;
         if (this.gameState == GameState.ACTIVE && gameState == GameState.STARTING) return;
 
+        //Switch statement to handle the current GameState.
         switch (gameState) {
             case STARTING -> startCountdownToStartGame();
             case ACTIVE -> {
@@ -75,6 +86,10 @@ public class GameManager {
         this.gameState = gameState;
     }
 
+    /**
+     * Void method to add a new Player to the arena.
+     * @param player Player that joins.
+     */
     public void addNewPlayerToArena(Player player) {
         PlayerStats playerStats = new PlayerStats(player.getUniqueId());
         PluginPlayer pluginPlayer = new PluginPlayer(player.getUniqueId(), player.getDisplayName(), playerStats);
@@ -83,10 +98,13 @@ public class GameManager {
         if (!scoreboardManager.doesPlayerHaveScoreboard(player.getUniqueId())) {
             scoreboardManager.registerNewPlayerScoreboard(playerStats, player.getUniqueId());
         }
-
-        player.teleport(arena.getRandomSpawnLocation());
     }
 
+    /**
+     * Boolean to check if the player is allowed to join.
+     * @param player Player that joins.
+     * @return true/false
+     */
     public boolean canJoin(Player player) {
         if (player.hasPermission(Permissions.JOIN_ARENA_ACTIVE_PERMISSION.getPermission())) return true;
         if (isGameRunning()) return false;
@@ -111,6 +129,11 @@ public class GameManager {
         return plugin.getPluginConfig().getLobbyLocation();
     }
 
+    /**
+     * Boolean check if the arena is on its maxKills.
+     * @param playerStats Current game stats of the Player.
+     * @return true/false
+     */
     public boolean isArenaOnMaxKills(PlayerStats playerStats) {
         return (playerStats.getKills() >= arena.getKillsForGameToEnd());
     }
@@ -135,16 +158,19 @@ public class GameManager {
         arena.setPowerUpSpawned(isPowerUpSpawned);
     }
 
-    public void addKillToArenaKills() {
-        arena.addKillToCurrentKills();
-    }
-
+    /**
+     * Start the Arrow Countdown Runnable/Task.
+     * @param player Player that shot his arrow and it missed.
+     */
     public void startArrowCountdown(Player player) {
 
         PluginPlayer pluginPlayer = arena.getPlayerInArena(player.getUniqueId());
 
+        //Check if player has already a countdown active.
         if (pluginPlayer.isArrowCountdown()) return;
+
         ArrowCountdownTask arrowXPCountdown = new ArrowCountdownTask(pluginPlayer);
+        //Run arrowCountdownTask for given player, that will run every 20 ticks (every second).
         arrowXPCountdown.runTaskTimerAsynchronously(plugin, 0, 20);
     }
 
@@ -156,18 +182,28 @@ public class GameManager {
         return gameState == GameState.ACTIVE;
     }
 
+    /**
+     * Start the Start Game Countdown Runnable/Task
+     * This runnable will usually run when the game can start. This will run every second.
+     */
     private void startCountdownToStartGame() {
         this.countdownTask = new CountdownTask(this);
         this.countdownTask.runTaskTimer(plugin, 0, 20);
     }
 
+    /**
+     * Void method to start the game.
+     */
     private void startGame() {
+        //ActiveGameTask/Runnable that runs every second when the game started.
         this.activeGameTask = new ActiveGameTask(plugin, this);
         this.activeGameTask.runTaskTimer(plugin, 0, 20);
 
+        //UpdateScoreboardTask, this will run every second to update the player scoreboards.
         UpdateScoreboardTask updateScoreboardTask = new UpdateScoreboardTask(this);
         updateScoreboardTask.runTaskTimerAsynchronously(plugin, 0, 20);
 
+        //Teleport every player that is in the game to a random location. After they have been teleported, give them the Bow and Arrow.
         arena.getPlayersInArena().values().forEach(pluginPlayer -> {
             Player player = Bukkit.getPlayer(pluginPlayer.getUuid());
             if (player == null) return;
@@ -178,14 +214,20 @@ public class GameManager {
             playerManager.givePlayerBowAndArrow(player);
         });
 
+        //This task is managing the coolDown between PowerUps.
         this.powerUpCooldownTask = new PowerUpCooldownTask(this, plugin);
         powerUpCooldownTask.runTaskTimer(plugin, 0, 20);
 
+        //Sends a sound to all players. And broadcast the start of the game.
         Bukkit.getOnlinePlayers().forEach(Sounds.GAME_START::playPacketSound);
         broadcast(Messages.GAME_START.getMessage());
     }
 
+    /**
+     * Void method to end the game.
+     */
     private void endGame() {
+        //Calculate the winner, and broadcast it. Send a title to the player that won. Activate the endGameTask.
         arena.calculateGameWinner();
         broadcast(Messages.WIN_MESSAGE.getMessage(arena.getWinner().getDisplayName()));
         if (Bukkit.getPlayer(arena.getWinner().getUuid()) != null) {
@@ -195,11 +237,18 @@ public class GameManager {
         this.endGameTask.runTaskTimer(plugin, 0, 20);
     }
 
+    /**
+     * Void method to restart the game.
+     */
     private void restartGame() {
+        //Get all online players and kick them. After that shutdown the server.
         Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(Messages.KICK_PLAYER_ON_ENDGAME.getMessage()));
         Bukkit.getServer().shutdown();
     }
 
+    /**
+     * Method to register the game events.
+     */
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         pluginManager.registerEvents(new PlayerHitListener(this), plugin);

@@ -7,6 +7,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class WeatherChangeListener implements Listener {
 
+    //Default listener to cancel weather changes.
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
         event.setCancelled(true);
