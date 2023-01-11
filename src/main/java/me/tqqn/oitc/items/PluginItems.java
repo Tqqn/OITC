@@ -13,6 +13,8 @@ public enum PluginItems {
     SET_POWERUP_LOCATIONS_ITEM("&cSet PowerUp Location", Material.FEATHER, new String[]{"&6Sets PowerUp locations."}, true, 1),
     SAVE_ITEM("&cSave", Material.NETHER_STAR, new String[]{"&6Saves locations."}, true, 1),
     POWERUP_SPEED_ITEM("&cSpeed-PowerUp", Material.FEATHER, null, true, 1),
+    POWERUP_JUMP_ITEM("&cJump-PowerUp", Material.RABBIT_FOOT, null, true, 1),
+    POWERUP_TRACKER_ITEM("&cTracker-PowerUp", Material.BLAZE_POWDER, null, true, 1),
     SET_ARENA_LOCATION_ITEM("&cSet Arena Locations", Material.FEATHER, new String[]{"&6Sets Arena Spawn locations"}, true, 1);
 
     private final String displayName;

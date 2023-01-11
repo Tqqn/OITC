@@ -31,9 +31,10 @@ public enum Messages {
     TITLE_DEATH_PLAYER(Color.translateColor("&c&l+1 Death"), "","",""),
     TITLE_PLAYER_WIN(Color.translateColor("&aYou won!"),"","",""),
     POWERUP_SPEED_PICKUP(Color.translateColor("&cYou picked up the speed powerup. You received 6 seconds of Speed II"), "", "", ""),
+    POWERUP_JUMP_PICKUP(Color.translateColor("&cYou picked up the jump powerup. You received 6 seconds of Jump Boost II"), "", "", ""),
+    POWERUP_TRACKER_PICKUP(Color.translateColor("&cYou picked up the tracker powerup. You can see players through walls for 6 seconds."), "", "", ""),
     POWERUP_SPAWN(Color.translateColor("&cPowerup has been spawned!"), "", "", ""),
     GIVE_ITEM(Color.translateColor("&cYou have received the One In Chamber items."),"", "", "");
-
 
     private final String message;
     private final String placeholder1;
